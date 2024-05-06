@@ -10,6 +10,9 @@ st.set_page_config(
     }
 )
 
+with st.sidebar:
+    st.title("Past meetings")
+
 st.markdown("<h1 style='text-align: center;'>❄️ ArcticAlly ❄️</h1>", unsafe_allow_html=True)
 st.markdown("<h4 style='text-align: center; margin-bottom: 2rem;'>Your 100%-free AI meeting assistant</h4>", unsafe_allow_html=True)
 
@@ -23,7 +26,7 @@ if uploaded_file is not None:
 def analyze():
     st.text("Analyzing...")
 
-tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs(["Summary", "Todo", "Speakers", "Sentiment", "Translation", "Insights", "Integrations", "Follow-ups"])
+tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs(["Summary", "Todo", "Participants", "Sentiment", "Translation", "Insights", "Integrations", "Follow-ups"])
 
 with tab1:
    st.header("Summary")
@@ -34,7 +37,7 @@ with tab2:
    st.header("Todo")
 
 with tab3:
-   st.header("Speakers")
+   st.header("Participants")
 
 with tab4:
    st.header("Sentiment")
