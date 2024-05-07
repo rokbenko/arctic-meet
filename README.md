@@ -1,7 +1,7 @@
 <div align="center">
  
 # ❄️ ArcticAlly ❄️
-### Your 100%-free AI meeting assistant
+### 100%-free AI meeting assistant,<br> always on your side 🙌
 
 <br>
 
