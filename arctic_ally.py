@@ -1,3 +1,4 @@
+# Import libraries
 import streamlit as st
 from transformers import pipeline
 import time
@@ -11,6 +12,24 @@ st.set_page_config(
         "Report a bug": "https://github.com/rokbenko/arctic-ally",
         "About": "# Lorem ipsum",
     },
+)
+
+# Add custom CSS
+st.markdown(
+    """
+    <style>
+        div[data-testid="column"]:nth-of-type(1) button
+        {
+            width: 100%;
+        }
+
+        div[data-testid="column"]:nth-of-type(2) button
+        {
+            width: 100%;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True,
 )
 
 
@@ -31,36 +50,48 @@ def main():
         "<h1 style='text-align: center;'>❄️ ArcticAlly ❄️</h1>", unsafe_allow_html=True
     )
     st.markdown(
-        "<h4 style='text-align: center; margin-bottom: 2rem;'>100%-free AI meeting assistant,<br> always on your side 🙌</h4>",
+        "<h4 style='text-align: center;'>100%-free AI meeting assistant,<br> always on your side 🙌</h4>",
         unsafe_allow_html=True,
     )
 
     # Create the form for the user to upload a meeting
     with st.form(key="my_form"):
-        uploaded_file = st.file_uploader(
+        # File uploader
+        uploaded_meeting = st.file_uploader(
             label="Upload a meeting that you would like ArcticAlly to analyze",
             type=["mp4"],
             accept_multiple_files=False,
             help="You can only upload one meeting at a time. The file must be in mp4 format and not larger than 5GB.",
         )
 
+        # Info message with a link to the sample meeting
         st.info(
             """
                 Don't you have your own meeting to try? Try a sample!
                 - Step 1: [Download a sample meeting](https://github.com/CharlyWargnier/CSVHub/blob/main/Wave_files_demos/Welcome.wav?raw=true)
                 - Step 2: Upload it using the file uploader above 👆
-                - Step 3: Click the "Analyze meeting" button below 👇
+                - Step 3: Click the "Start analysis" button below 👇
             """
         )
 
-        if st.form_submit_button(label="Analyze meeting"):
+        col_start, col_stop = st.columns([0.2, 0.2])
+        with col_start:
+            start_button = st.form_submit_button(
+                label="Start analysis", type="secondary"
+            )
+        with col_stop:
+            stop_button = st.form_submit_button(label="Stop analysis", type="primary")
+
+        # If the start button is clicked, start the analysis
+        if start_button:
             start_time = time.time()
 
+            # Insert a status container to show the progress of the analysis
             with st.status(
-                label=f"Analyzing {uploaded_file.name}... This will take a while. Please be patient.",
+                label=f"Analyzing {uploaded_meeting.name}... This will take a while. Please be patient.",
                 expanded=True,
             ) as status:
-                col1, col2 = st.columns([3, 1])
+                col1, col2 = st.columns([0.9, 0.1])
 
                 # Step 1: Searching for uploaded meeting
                 with col1:
@@ -68,7 +99,7 @@ def main():
                 with col2:
                     st.write("&nbsp;")
 
-                if uploaded_file is not None:
+                if uploaded_meeting is not None:  # Check if there is a meeting uploaded
                     step1_time = int((time.time() - start_time) * 1000)
                     with col1:
                         st.write("Meeting found ✔️")
@@ -81,7 +112,7 @@ def main():
                     with col2:
                         st.write("&nbsp;")
 
-                    bytes_data = uploaded_file.read()
+                    bytes_data = uploaded_meeting.read()  # Read the uploaded meeting
 
                     step2_time = int((time.time() - start_time) * 1000)
                     with col1:
@@ -98,7 +129,7 @@ def main():
                     pipe = pipeline(
                         "automatic-speech-recognition", "openai/whisper-large-v2"
                     )
-                    transcription = pipe(bytes_data)
+                    transcription = pipe(bytes_data)  # Transcribe the uploaded meeting
 
                     step3_time = int((time.time() - start_time) * 1000)
                     with col1:
@@ -106,7 +137,9 @@ def main():
                     with col2:
                         st.write(format_time(step3_time))
 
-                    status.update(label="Meeting transcribed ✔️")
+        # If the stop button is clicked, stop the analysis
+        if stop_button:
+            st.stop()
 
     if "transcription" in locals():
         st.write("Transcription:")
@@ -151,9 +184,10 @@ def main():
         with tab8:
             st.header("Follow-ups")
 
-    # Create the sidebar
-    with st.sidebar:
-        st.title("Past meetings")
+
+# Create the sidebar
+with st.sidebar:
+    st.title("Past meetings")
 
 
 if __name__ == "__main__":
