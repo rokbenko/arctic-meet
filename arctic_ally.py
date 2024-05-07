@@ -1,5 +1,6 @@
 import streamlit as st
 from transformers import pipeline
+import time
 
 # Set the page configuration
 st.set_page_config(
@@ -11,6 +12,16 @@ st.set_page_config(
         "About": "# Lorem ipsum",
     },
 )
+
+
+# Define a function to format the time
+def format_time(milliseconds):
+    if milliseconds < 1000:
+        return f"{int(milliseconds)} ms"
+    elif milliseconds < 60000:
+        return f"{int(milliseconds/1000)} s"
+    else:
+        return f"{int(milliseconds/60000)} min"
 
 
 # Define the main function
@@ -38,64 +49,107 @@ def main():
                 Don't you have your own meeting to try? Try a sample!
                 - Step 1: [Download a sample meeting](https://github.com/CharlyWargnier/CSVHub/blob/main/Wave_files_demos/Welcome.wav?raw=true)
                 - Step 2: Upload it using the file uploader above 👆
-                - Step 3: Click the "Analyze meeting" button 👇
+                - Step 3: Click the "Analyze meeting" button below 👇
             """
         )
 
-        submit_button = st.form_submit_button(label="Analyze meeting")
+        if st.form_submit_button(label="Analyze meeting"):
+            start_time = time.time()
 
-    # Get the transcription of the uploaded meeting
-    if uploaded_file is not None:
-        if submit_button:
-            st.text(f"Analyzing {uploaded_file.name}...")
+            with st.status(
+                label=f"Analyzing {uploaded_file.name}... This will take a while. Please be patient.",
+                expanded=True,
+            ) as status:
+                col1, col2 = st.columns([3, 1])
 
-            bytes_data = uploaded_file.read()
+                # Step 1: Searching for uploaded meeting
+                with col1:
+                    st.write("Searching for uploaded meeting...")
+                with col2:
+                    st.write("&nbsp;")
 
-            pipe = pipeline("automatic-speech-recognition", "openai/whisper-large-v2")
+                if uploaded_file is not None:
+                    step1_time = int((time.time() - start_time) * 1000)
+                    with col1:
+                        st.write("Meeting found ✔️")
+                    with col2:
+                        st.write(format_time(step1_time))
 
-            transcription = pipe(bytes_data)
+                    # Step 2: Reading uploaded meeting
+                    with col1:
+                        st.write("Reading uploaded meeting...")
+                    with col2:
+                        st.write("&nbsp;")
 
-            st.write("Transcription:")
-            st.write(transcription)
+                    bytes_data = uploaded_file.read()
 
-    tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs(
-        [
-            "Summary",
-            "Todo",
-            "Participants",
-            "Sentiment",
-            "Translation",
-            "Insights",
-            "Integrations",
-            "Follow-ups",
-        ]
-    )
+                    step2_time = int((time.time() - start_time) * 1000)
+                    with col1:
+                        st.write("Meeting read ✔️")
+                    with col2:
+                        st.write(format_time(step2_time))
 
-    with tab1:
-        st.header("Summary")
-        st.text("Summary: ...")
-        st.text("Keywords: ...")
+                    # Step 3: Making transcription of uploaded meeting
+                    with col1:
+                        st.write("Making transcription of uploaded meeting...")
+                    with col2:
+                        st.write("&nbsp;")
 
-    with tab2:
-        st.header("Todo")
+                    pipe = pipeline(
+                        "automatic-speech-recognition", "openai/whisper-large-v2"
+                    )
+                    transcription = pipe(bytes_data)
 
-    with tab3:
-        st.header("Participants")
+                    step3_time = int((time.time() - start_time) * 1000)
+                    with col1:
+                        st.write("Transcription made ✔️")
+                    with col2:
+                        st.write(format_time(step3_time))
 
-    with tab4:
-        st.header("Sentiment")
+                    status.update(label="Meeting transcribed ✔️")
 
-    with tab5:
-        st.header("Translation")
+    if "transcription" in locals():
+        st.write("Transcription:")
+        st.write(transcription["text"])
 
-    with tab6:
-        st.header("Insights")
+        tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs(
+            [
+                "Summary",
+                "Todo",
+                "Participants",
+                "Sentiment",
+                "Translation",
+                "Insights",
+                "Integrations",
+                "Follow-ups",
+            ]
+        )
 
-    with tab7:
-        st.header("Integrations")
+        with tab1:
+            st.header("Summary")
+            st.text("Summary: ...")
+            st.text("Keywords: ...")
 
-    with tab8:
-        st.header("Follow-ups")
+        with tab2:
+            st.header("Todo")
+
+        with tab3:
+            st.header("Participants")
+
+        with tab4:
+            st.header("Sentiment")
+
+        with tab5:
+            st.header("Translation")
+
+        with tab6:
+            st.header("Insights")
+
+        with tab7:
+            st.header("Integrations")
+
+        with tab8:
+            st.header("Follow-ups")
 
     # Create the sidebar
     with st.sidebar:
