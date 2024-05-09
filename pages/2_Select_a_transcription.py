@@ -1,9 +1,10 @@
 # Import libraries
 import streamlit as st
+import pandas as pd
 
 # Set the page configuration
 st.set_page_config(
-    page_title="ArcticAlly – 100%-free AI meeting assistant, always on your side",
+    page_title="ArcticAlly – Select a transcription",
     page_icon="❄️",
     layout="centered",
     menu_items={
@@ -34,32 +35,81 @@ st.markdown(
 
 # Define the main function
 def main():
-    # Add a title and subtitle
+    # Add a title
     st.markdown(
-        """
-            <h1 style='text-align: center;'>❄️ ArcticAlly ❄️</h1>
-            <h4 style='text-align: center; margin-bottom: 1rem;'>100%-free AI meeting assistant,<br> always on your side 🙌</h4>
-        """,
+        "<h2 style='text-align: center; margin-bottom: 0.5rem;'>❄️ Step 2: Select a transcription ❄️</h2>",
         unsafe_allow_html=True,
     )
 
-    # Add a description
-    st.write(
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam tempus at dolor ultrices viverra. Aliquam hendrerit auctor tellus in sagittis. Sed diam nunc, maximus vitae urna nec, tempus porttitor lacus. Pellentesque eros nunc, imperdiet vitae malesuada quis, finibus non est. Duis odio lorem, pretium quis pulvinar non, pharetra eget leo. Ut porta venenatis diam, et hendrerit quam tristique at. Praesent id euismod augue, in tincidunt eros. Pellentesque felis nibh, tempus et orci in, sagittis maximus neque. Nam et interdum diam. Suspendisse potenti. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum lectus ex, hendrerit ac ex at, porttitor sagittis erat. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nunc auctor ante in fringilla ultricies."
-    )
+    # Get keys starting with "transcription_"
+    transcription_keys = [
+        key for key in st.session_state.keys() if key.startswith("transcription_")
+    ]
 
-    # Add a CTA button to continue with Step 1
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.write("&nbsp;")
-    with col2:
-        cta_button = st.button("Start using ArcticAlly", use_container_width=True)
-    with col3:
-        st.write("&nbsp;")
+    if transcription_keys:
+        # If there are transcription keys in the session state
+        # Add a selectbox to select the transcription to be analyzed
+        selected_transcription = st.selectbox(
+            "Which transcription would you like to analyze?", transcription_keys
+        )
 
-    # If the CTA button is clicked, switch pages
-    if cta_button:
-        st.switch_page("pages/1_Upload_a_meeting.py")
+        # Store the selected transcription in the session state
+        if "selected_transcription" not in st.session_state:
+            st.session_state["selected_transcription"] = selected_transcription
+        else:
+            st.session_state["selected_transcription"] = selected_transcription
+
+        # Add a CTA button to continue with Step 3
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.write("&nbsp;")
+        with col2:
+            cta_button = st.button("Continue with Step 3", use_container_width=True)
+        with col3:
+            st.write("&nbsp;")
+
+        # If the CTA button is clicked, switch pages
+        if cta_button:
+            st.switch_page("pages/3_Meeting_analysis.py")
+
+        # Add a header
+        st.markdown("<h3>All past transcriptions</h3>", unsafe_allow_html=True)
+
+        # Create an empty DataFrame to store the transcription key-value pairs
+        transcription_data = {"Key": [], "Value": []}
+
+        # Iterate over the keys in the session state
+        for key in st.session_state.keys():
+            # Check if the key starts with "transcription_"
+            if key.startswith("transcription_"):
+                # If a key starts with "transcription_", add the key-value pair to the DataFrame
+                transcription_data["Key"].append(key)
+                transcription_data["Value"].append(st.session_state[key])
+
+        # Convert the dictionary to a DataFrame
+        transcription_df = pd.DataFrame(transcription_data)
+
+        # Display the DataFrame using st.data_editor()
+        edited_transcription_df = st.data_editor(transcription_df, disabled=True)
+    else:
+        # If there are no transcription keys in the session state
+        # Add an error message
+        st.error(
+            "No transcriptions are available to select. Please upload a meeting to get a transcription.",
+            icon="❗",
+        )
+
+        # Add a CTA button to go back to Step 1
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.write("&nbsp;")
+        with col2:
+            cta_button = st.button("Start using ArcticAlly", use_container_width=True)
+        with col3:
+            st.write("&nbsp;")
+
+        if cta_button:
+            st.switch_page("pages/1_Upload_a_meeting.py")
 
     # Add a sidebar
     with st.sidebar:
