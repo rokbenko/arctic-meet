@@ -1,7 +1,7 @@
 # Import libraries
 import streamlit as st
 from snowflake.snowpark import Session
-from snowflake.cortex import Summarize
+from snowflake.cortex import Summarize, Complete
 import pandas as pd
 
 # Set the page configuration
@@ -27,7 +27,7 @@ if (
     or not connection_params["password"]
 ):
     st.sidebar.write(
-        "#### ArcticAlly uses Snowflake Cortex to analyze meetings. Please set your Snowflake credentials in the sidebar below."
+        "#### ArcticAlly uses Snowflake Cortex to analyze meetings. Please set your Snowflake credentials below."
     )
 
 # If account is not set in the secrets, ask the user to set it in the sidebar
@@ -104,8 +104,25 @@ st.markdown(
 )
 
 
+def analyze_transcription(selected_transcription_value):
+    # Summary
+    summary = Summarize(text=selected_transcription_value, session=session)
+
+    # Keywords
+    keywords = Complete(
+        model="snowflake-arctic",
+        prompt=f"Give me up to 5 keywords of the following text: {selected_transcription_value}. Your response should be in JSON format.",
+        session=session,
+    )
+
+    return summary, keywords
+
+
 # Define the main function
 def main():
+    # Initialize analysis_result variable to None
+    analysis_result = None
+
     try:
         # Add a title
         st.markdown(
@@ -177,10 +194,9 @@ def main():
                     ]
 
                 if start_button:
-                    summary = Summarize(
-                        text=selected_transcription_value, session=session
+                    analysis_result = analyze_transcription(
+                        selected_transcription_value
                     )
-                    st.write(summary)
             else:
                 # If the user has not selected a transcription to analyze
                 # Add an error message
@@ -202,46 +218,6 @@ def main():
 
                 if cta_button:
                     st.switch_page("pages/2_Select_a_transcription.py")
-
-            # Add tabs to display the different sections of the analysis
-            tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs(
-                [
-                    "Summary",
-                    "Todo",
-                    "Participants",
-                    "Sentiment",
-                    "Translation",
-                    "Insights",
-                    "Integrations",
-                    "Follow-ups",
-                ]
-            )
-
-            with tab1:
-                st.header("Summary")
-                st.text("Summary: ...")
-                st.text("Keywords: ...")
-
-            with tab2:
-                st.header("Todo")
-
-            with tab3:
-                st.header("Participants")
-
-            with tab4:
-                st.header("Sentiment")
-
-            with tab5:
-                st.header("Translation")
-
-            with tab6:
-                st.header("Insights")
-
-            with tab7:
-                st.header("Integrations")
-
-            with tab8:
-                st.header("Follow-ups")
         else:
             # If there are no transcription keys in the session state
             # Add an error message
@@ -264,6 +240,58 @@ def main():
             # If the CTA button is clicked, switch pages
             if cta_button:
                 st.switch_page("pages/1_Upload_a_meeting.py")
+
+        if analysis_result:
+            # Add tabs to display the different sections of the analysis
+            tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs(
+                [
+                    "Summary",
+                    "Todo",
+                    "Participants",
+                    "Sentiment",
+                    "Translation",
+                    "Insights",
+                    "Integrations",
+                    "Follow-ups",
+                ]
+            )
+
+            with tab1:
+                st.header("Summary of the meeting")
+                if analysis_result:
+                    summary, keywords = analysis_result
+
+                    if summary:
+                        st.write(summary)
+                    else:
+                        st.write("No summary available")
+                    if keywords:
+                        st.text("Keywords: " + keywords)
+                    else:
+                        st.write("No keywords available")
+                else:
+                    st.write("No meeting analysis available")
+
+            with tab2:
+                st.header("Todo")
+
+            with tab3:
+                st.header("Participants")
+
+            with tab4:
+                st.header("Sentiment")
+
+            with tab5:
+                st.header("Translation")
+
+            with tab6:
+                st.header("Insights")
+
+            with tab7:
+                st.header("Integrations")
+
+            with tab8:
+                st.header("Follow-ups")
     finally:
         if session:
             # Close Snowflake session
