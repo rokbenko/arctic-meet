@@ -50,7 +50,10 @@ def main():
         # If there are transcription keys in the session state
         # Add a selectbox to select the transcription to be analyzed
         selected_transcription = st.selectbox(
-            "Which transcription would you like to analyze?", transcription_keys
+            "Which transcription would you like to analyze?",
+            transcription_keys,
+            index=None,
+            placeholder="Select a transcription...",
         )
 
         # Store the selected transcription in the session state
@@ -68,9 +71,18 @@ def main():
         with col3:
             st.write("&nbsp;")
 
-        # If the CTA button is clicked, switch pages
+        # If the CTA button is clicked
         if cta_button:
-            st.switch_page("pages/3_Meeting_analysis.py")
+            selected_transcription = st.session_state.get("selected_transcription")
+            if selected_transcription is not None:
+                # If a transcription is selected, go to Step 3
+                st.switch_page("pages/3_Meeting_analysis.py")
+            else:
+                # If no transcription is selected, show a toast notification
+                st.toast(
+                    body="There is no transcription selected. Please select a transcription.",
+                    icon="❌",
+                )
 
         # Add a header
         st.markdown("<h3>All past transcriptions</h3>", unsafe_allow_html=True)

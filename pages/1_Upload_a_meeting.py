@@ -87,7 +87,7 @@ def main():
         # Info message with a link to the sample meeting
         st.info(
             """
-                Don't you have your own meeting to try? Download and try a [sample meeting](https://github.com/CharlyWargnier/CSVHub/blob/main/Wave_files_demos/Welcome.wav?raw=true).
+                Don't you have your own meeting to try? Download and try a [sample meeting](https://github.com/rokbenko/arctic-ally/blob/main/sample_meeting.mp4?raw=true).
             """
         )
 
