@@ -107,7 +107,7 @@ def main():
         # If there are no transcription keys in the session state
         # Add an error message
         st.error(
-            "No transcriptions are available to select. Please upload a meeting to get a transcription.",
+            body="No transcriptions are available to select. Please upload a meeting to get a transcription.",
             icon="❗",
         )
 

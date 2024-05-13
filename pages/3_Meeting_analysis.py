@@ -5,6 +5,7 @@ from snowflake.cortex import Summarize, Complete, Sentiment, Translate
 import pandas as pd
 import json
 import re
+import plotly.express as px
 
 # Set the page configuration
 st.set_page_config(
@@ -161,7 +162,7 @@ def analyze_transcription(
 
         keywords = Complete(
             model="snowflake-arctic",
-            prompt=f'Give me up to five keywords from the following text in a JSON object containing a list of keywords: {selected_transcription_value}. Your response should be in JSON format, not in a list or any other format. Here you have an example of the response: {{"keywords": ["keyword1","keyword2","keyword3","keyword4","keyword5"]}}',
+            prompt=f'Provide up to five keywords from the following text in a JSON object containing a list of keywords: {selected_transcription_value}. Your response should be in JSON format, not in a list or any other format. Here you have an example of the response: {{"keywords": ["keyword1","keyword2","keyword3","keyword4","keyword5"]}}',
             session=session,
         )
 
@@ -169,7 +170,7 @@ def analyze_transcription(
     if agenda_checkbox:
         agenda = Complete(
             model="snowflake-arctic",
-            prompt=f"Give me a concise agenda with a maximum of five topics discussed in the following text: {selected_transcription_value}. Your response should be a numbered list. Here you have an example of the response: 1. Topic 1\n2. Topic 2\n3. Topic 3\n4. Topic 4\n5. Topic 5",
+            prompt=f"Provide a concise agenda with topics discussed in the following text: {selected_transcription_value}. Your response should be a numbered list. Here you have an example of the response: 1. Topic 1\n2. Topic 2\n3. Topic 3\n4. Topic 4\n5. Topic 5",
             session=session,
         )
 
@@ -177,7 +178,7 @@ def analyze_transcription(
     if participants_checkbox:
         participants = Complete(
             model="snowflake-arctic",
-            prompt=f"Give me a list of participants if you can extract names in the following text: {selected_transcription_value}. Your response should be a list. Here you have an example of the response if you can extract names: 1. John Doe\n2. Jane Doe\n3. Bob Smith. If you cannot extract names, return just a number of participants. Here you have an example of the response if you cannot extract names: There were 3 participants in the meeting.",
+            prompt=f'If you can extract names, provide all participant names and their sex from the following text in a JSON object: {selected_transcription_value}. Your response should be in JSON format, not in a list or any other format. Here is an example of the response if you can extract names: {{"participants_names": [{{"name": "John", "sex": "male"}}, {{"name": "Jane", "sex": "female"}}, {{"name": "Bob", "sex": "male"}}, {{"name": "Alice", "sex": "female"}}]}}. If you cannot extract names, provide a number of participants from the following text in a JSON object: {selected_transcription_value}. Your response should be in JSON format, not in a list or any other format. Here is an example of the response if you cannot extract names: {{"participants_number": 4}}. If you cannot extract participant names or the number of participants, provide the following JSON object: {{"participants_fail": "ArcticAlly could not extract participants."}}',
             session=session,
         )
 
@@ -276,14 +277,14 @@ def main():
                     if cta_button:
                         st.switch_page("pages/2_Select_a_transcription.py")
 
-                    # Create the form for the user to select the analysis options
+                    # Create the form for the user to select analysis features
                     with st.form(key="analysis_form"):
-                        # Add a text box to let know the user which analysis options are available
+                        # Add a text box to let know the user which analysis features are available
                         st.write(
-                            "Please select the analysis options you would like to include:"
+                            "Please select the analysis features you would like to include:"
                         )
 
-                        # Add checkboxes to select the analysis options
+                        # Add checkboxes to select the analysis features
                         col1, col2, col3, col4, col5 = st.columns(5)
                         with col1:
                             summary_checkbox = st.checkbox(
@@ -415,7 +416,9 @@ def main():
                                         and selected_to_language is not None
                                     ):
                                         # Show a spinner while analyzing the transcription
-                                        with st.spinner("Analyzing transcription..."):
+                                        with st.spinner(
+                                            "Analyzing the transcription..."
+                                        ):
                                             # Run the analyze_transcription function
                                             analysis_result = analyze_transcription(
                                                 selected_transcription_value,
@@ -436,7 +439,7 @@ def main():
                                 # If the user has not selected the translation checkbox
                                 else:
                                     # Show a spinner while analyzing the transcription
-                                    with st.spinner("Analyzing transcription..."):
+                                    with st.spinner("Analyzing the transcription..."):
                                         # Run the analyze_transcription function
                                         analysis_result = analyze_transcription(
                                             selected_transcription_value,
@@ -452,7 +455,7 @@ def main():
                                 # If no checkbox is checked
                                 # Show a toast notification
                                 st.toast(
-                                    body="Please select at least one analysis option to analyze.",
+                                    body="Please select at least one analysis feature to start the analysis.",
                                     icon="❌",
                                 )
                 else:
@@ -460,7 +463,7 @@ def main():
                     # If the user has not selected a transcription to analyze
                     # Add an error message
                     st.error(
-                        "No transcription is selected to analyze. Please select a transcription to analyze.",
+                        body="No transcription is selected to analyze. Please select a transcription to analyze.",
                         icon="❗",
                     )
 
@@ -481,7 +484,7 @@ def main():
                 # If the user has not selected a transcription to analyze
                 # Add an error message
                 st.error(
-                    "No transcription is selected to analyze. Please select a transcription to analyze.",
+                    body="No transcription is selected to analyze. Please select a transcription to analyze.",
                     icon="❗",
                 )
 
@@ -502,7 +505,7 @@ def main():
             # If there are no transcription keys in the session state
             # Add an error message
             st.error(
-                "No transcriptions are available to analyze. Please upload a meeting to get a transcription.",
+                body="No transcriptions are available to analyze. Please upload a meeting to get a transcription.",
                 icon="❗",
             )
 
@@ -535,7 +538,7 @@ def main():
 
             # Add a spacer
             st.markdown(
-                "<div style='margin-top: 1rem;'>&nbsp;</div>", unsafe_allow_html=True
+                "<div style='margin-top: 0.5rem;'>&nbsp;</div>", unsafe_allow_html=True
             )
 
             # Create a list to store the names of the tabs
@@ -600,7 +603,85 @@ def main():
                 if "Participants" in tab_names:
                     with tabs[tab_names.index("Participants")]:
                         st.subheader("Participants of the meeting")
-                        st.write(participants)
+
+                        participants_dict = json.loads(participants)
+
+                        get_key = list(participants_dict.keys())[0]
+
+                        # Lists to store image URLs, captions and genders
+                        images = []
+                        captions = []
+                        genders = []
+
+                        # If Snowflake Arctic was able to extract names and sexes
+                        if get_key == "participants_names":
+                            get_participants = participants_dict[get_key]
+
+                            for participant in get_participants:
+                                name = participant["name"]
+                                sex = participant["sex"]
+
+                                # Determine the image URL based on the participant's sex
+                                image_url = (
+                                    "images/girl.png"
+                                    if sex == "female"
+                                    else "images/boy.png"
+                                )
+
+                                # Append the image URL to the list
+                                images.append(image_url)
+
+                                # Append the participant's name as caption
+                                captions.append(name)
+
+                                # Append the gender to the list
+                                genders.append(sex)
+
+                            # Display the images
+                            st.image(images, width=100, caption=captions)
+
+                            st.subheader("Distribution of male vs female participants")
+
+                            # Count the occurrences of each gender
+                            gender_counts = pd.Series(genders).value_counts()
+
+                            # Create a Plotly pie chart
+                            fig = px.pie(
+                                values=gender_counts.values,  # Gender counts
+                                names=gender_counts.index,  # Gender labels (male/female)
+                            )
+
+                            # Display the bar chart
+                            st.plotly_chart(fig, use_container_width=True)
+
+                            # Add an info message
+                            st.info(
+                                body="This analysis feature is the least reliable because it depends on names being mentioned in the meeting at any point. It might happen that ArcticAlly doesn't find all participants but only some of them.",
+                                icon="ℹ️",
+                            )
+
+                        # If Snowflake Arctic was not able to extract names and sexes, but was able to extract the number of participants
+                        if get_key == "participants_number":
+                            get_participants = participants_dict[get_key]
+
+                            st.write(
+                                f"There were :blue-background[{get_participants}] participants in the meeting."
+                            )
+
+                            # Add an info message
+                            st.info(
+                                body="This analysis feature is the least reliable because it depends on the number of participants being mentioned in the meeting at any point. It might happen that ArcticAlly doesn't find all participants but only some of them.",
+                                icon="ℹ️",
+                            )
+
+                        # If Snowflake Arctic was not able to extract names and sexes, and was not able to extract the number of participants
+                        if get_key == "participants_fail":
+                            get_participants = participants_dict[get_key]
+
+                            st.error(
+                                body=get_participants,
+                                icon="❌",
+                            )
                 if "Sentiment" in tab_names:
                     with tabs[tab_names.index("Sentiment")]:
                         st.subheader("Sentiment of the meeting")
