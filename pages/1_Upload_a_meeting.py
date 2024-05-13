@@ -75,7 +75,7 @@ def main():
     )
 
     # Create the form for the user to upload a meeting
-    with st.form(key="my_form"):
+    with st.form(key="upload_form"):
         # File uploader
         uploaded_meeting = st.file_uploader(
             label="Upload your meeting to get a transcription of it",
@@ -203,7 +203,7 @@ def main():
         st.write("&nbsp;")
     with col2:
         cta_button = st.button(
-            label="Continue with Step 2",
+            label="Continue with Step 2 🚀",
             type="secondary",
         )
     with col3:

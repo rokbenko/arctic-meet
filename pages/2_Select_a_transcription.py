@@ -67,7 +67,7 @@ def main():
         with col1:
             st.write("&nbsp;")
         with col2:
-            cta_button = st.button("Continue with Step 3", use_container_width=True)
+            cta_button = st.button("Continue with Step 3 🚀", use_container_width=True)
         with col3:
             st.write("&nbsp;")
 
@@ -116,7 +116,9 @@ def main():
         with col1:
             st.write("&nbsp;")
         with col2:
-            cta_button = st.button("Start using ArcticAlly", use_container_width=True)
+            cta_button = st.button(
+                "Start using ArcticAlly 🚀", use_container_width=True
+            )
         with col3:
             st.write("&nbsp;")
 

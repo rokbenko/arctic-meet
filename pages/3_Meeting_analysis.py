@@ -137,66 +137,83 @@ def get_transcription_value(selected_transcription_key):
 
 
 # Define a function to analyze the selected transcription
-def analyze_transcription(selected_transcription_value):
-    # Summary
-    summary = Summarize(text=selected_transcription_value, session=session)
-
-    # Keywords
-    keywords = Complete(
-        model="snowflake-arctic",
-        prompt=f'Give me up to five keywords from the following text in a JSON object containing a list of keywords: {selected_transcription_value}. Your response should be in JSON format, not in a list or any other format. Here you have an example of the response: {{"keywords": ["keyword1","keyword2","keyword3","keyword4","keyword5"]}}',
-        session=session,
-    )
-
-    # Agenda
-    agenda = Complete(
-        model="snowflake-arctic",
-        prompt=f"Give me a concise agenda with a maximum of five topics discussed in the following text: {selected_transcription_value}. Your response should be a numbered list. Here you have an example of the response: 1. Topic 1\n2. Topic 2\n3. Topic 3\n4. Topic 4\n5. Topic 5",
-        session=session,
-    )
-
-    # Participants
-    participants = Complete(
-        model="snowflake-arctic",
-        prompt=f"Give me a list of participants if you can extract names in the following text: {selected_transcription_value}. Your response should be a list. Here you have an example of the response if you can extract names: 1. John Doe\n2. Jane Doe\n3. Bob Smith. If you cannot extract names, return just a number of participants. Here you have an example of the response if you cannot extract names: There were 3 participants in the meeting.",
-        session=session,
-    )
-
-    # Sentiment
-    sentences = re.split(
-        r"(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s", selected_transcription_value
-    )
-
-    # Create a list to store sentiment data
-    sentiment_data = []
-
-    # Iterate over each sentence and calculate sentiment
-    for sentence in sentences:
-        sentiment = Sentiment(text=sentence, session=session)
-        # Append the sentiment data to the list
-        sentiment_data.append({"Sentence": sentence, "Sentiment": sentiment})
-
-    # Convert the list of dictionaries into a DataFrame
-    sentiment_df = pd.DataFrame(sentiment_data)
-
-    return summary, keywords, agenda, participants, sentiment_df
-
-
-# Define a function to translate the selected transcription
-def translate_transcription(
-    selected_transcription_value, selected_from_language, selected_to_language
+def analyze_transcription(
+    selected_transcription_value,
+    summary_checkbox,
+    agenda_checkbox,
+    participants_checkbox,
+    sentiment_checkbox,
+    translation_checkbox,
+    selected_from_language,
+    selected_to_language,
+    insights_checkbox,
 ):
-    # Translation
-    translation = Translate(
-        text=selected_transcription_value,
-        from_language=selected_from_language,
-        to_language=selected_to_language,
-        session=session,
-    )
+    # Initialize variables to store analysis results
+    summary = None
+    keywords = None
+    agenda = None
+    participants = None
+    sentiment_df = pd.DataFrame()
+    translation = None
+    insights = None
 
-    st.write(translation)
+    # If the summary checkbox is checked
+    if summary_checkbox:
+        summary = Summarize(text=selected_transcription_value, session=session)
 
-    return translation
+        keywords = Complete(
+            model="snowflake-arctic",
+            prompt=f'Give me up to five keywords from the following text in a JSON object containing a list of keywords: {selected_transcription_value}. Your response should be in JSON format, not in a list or any other format. Here you have an example of the response: {{"keywords": ["keyword1","keyword2","keyword3","keyword4","keyword5"]}}',
+            session=session,
+        )
+
+    # If the agenda checkbox is checked
+    if agenda_checkbox:
+        agenda = Complete(
+            model="snowflake-arctic",
+            prompt=f"Give me a concise agenda with a maximum of five topics discussed in the following text: {selected_transcription_value}. Your response should be a numbered list. Here you have an example of the response: 1. Topic 1\n2. Topic 2\n3. Topic 3\n4. Topic 4\n5. Topic 5",
+            session=session,
+        )
+
+    # If the participants checkbox is checked
+    if participants_checkbox:
+        participants = Complete(
+            model="snowflake-arctic",
+            prompt=f"Give me a list of participants if you can extract names in the following text: {selected_transcription_value}. Your response should be a list. Here you have an example of the response if you can extract names: 1. John Doe\n2. Jane Doe\n3. Bob Smith. If you cannot extract names, return just a number of participants. Here you have an example of the response if you cannot extract names: There were 3 participants in the meeting.",
+            session=session,
+        )
+
+    # If the sentiment checkbox is checked
+    if sentiment_checkbox:
+        sentences = re.split(
+            r"(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s", selected_transcription_value
+        )
+
+        # Create a list to store sentiment data
+        sentiment_data = []
+
+        # Iterate over each sentence and calculate sentiment
+        for sentence in sentences:
+            sentiment = Sentiment(text=sentence, session=session)
+            # Append the sentiment data to the list
+            sentiment_data.append({"Sentence": sentence, "Sentiment": sentiment})
+
+        # Convert the list of dictionaries into a DataFrame
+        sentiment_df = pd.DataFrame(sentiment_data)
+
+    # If the translation checkbox is checked
+    if translation_checkbox:
+        translation = Translate(
+            text=selected_transcription_value,
+            from_language=selected_from_language,
+            to_language=selected_to_language,
+            session=session,
+        )
+
+    # If the insights checkbox is checked
+    # Todo
+
+    return summary, keywords, agenda, participants, sentiment_df, translation, insights
 
 
 # Languages that are supported for the Translate function
@@ -239,40 +256,240 @@ def main():
                 # Get the selected transcription from the session state
                 selected_transcription_key = st.session_state["selected_transcription"]
 
-                # Add a text box to display the selected transcription
-                st.markdown(
-                    f"""
-                        <div style='text-align:center;'>You selected the following transcription to analyze:</div>
-                        <div class='selected-transcription' style='text-align:center; margin-bottom: 2rem;'>{selected_transcription_key}</div>
-                    """,
-                    unsafe_allow_html=True,
-                )
-
-                # Buttons to start and stop the transcription analysis
-                col_start, col_stop = st.columns(2)
-                with col_start:
-                    start_button = st.button(
-                        "Start transcription analysis",
-                        use_container_width=True,
-                        type="secondary",
-                    )
-                with col_stop:
-                    stop_button = st.button(
-                        "Stop transcription analysis",
-                        use_container_width=True,
-                        type="primary",
+                if selected_transcription_key is not None:
+                    # Add a text box to display the selected transcription
+                    st.markdown(
+                        f"""
+                            <div style='text-align:center;'>You selected the following transcription to analyze:</div>
+                            <div class='selected-transcription' style='text-align:center; margin-bottom: 1rem;'>{selected_transcription_key}</div>
+                        """,
+                        unsafe_allow_html=True,
                     )
 
-                # Run the get_transcription_value function
-                selected_transcription_value = get_transcription_value(
-                    selected_transcription_key
-                )
+                    # Add a CTA button to go back to Step 2
+                    col1, col2, col3 = st.columns(3)
+                    with col1:
+                        st.write("&nbsp;")
+                    with col2:
+                        cta_button = st.button(
+                            "Change the transcription", use_container_width=True
+                        )
+                    with col3:
+                        st.write("&nbsp;")
 
-                if start_button:
-                    # Run the analyze_transcription function
-                    analysis_result = analyze_transcription(
-                        selected_transcription_value
+                    # If the CTA button is clicked, switch pages
+                    if cta_button:
+                        st.switch_page("pages/2_Select_a_transcription.py")
+
+                    # Create the form for the user to select the analysis options
+                    with st.form(key="analysis_form"):
+                        # Add a text box to let know the user which analysis options are available
+                        st.write(
+                            "Please select the analysis options you would like to include:"
+                        )
+
+                        # Add checkboxes to select the analysis options
+                        col1, col2, col3, col4 = st.columns(4)
+                        with col1:
+                            summary_checkbox = st.checkbox(
+                                "Summary",
+                                key="summary_checkbox",
+                            )
+                        with col2:
+                            agenda_checkbox = st.checkbox(
+                                "Agenda",
+                                key="agenda_checkbox",
+                            )
+                        with col3:
+                            participants_checkbox = st.checkbox(
+                                "Participants",
+                                key="participants_checkbox",
+                            )
+                        with col4:
+                            sentiment_checkbox = st.checkbox(
+                                "Sentiment",
+                                key="sentiment_checkbox",
+                            )
+                        with col1:
+                            translation_checkbox = st.checkbox(
+                                "Translation",
+                                key="translation_checkbox",
+                            )
+                        with col2:
+                            insights_checkbox = st.checkbox(
+                                "Insights",
+                                key="insights_checkbox",
+                            )
+
+                        # Add a selectbox to select the language to translate from and to
+                        col_left, col_right = st.columns(2)
+                        with col_left:
+                            selected_from_language = st.selectbox(
+                                "Which language would you like to translate from?:red[*]",
+                                languages_supported,
+                                index=None,
+                                placeholder="Select a language...",
+                            )
+                            st.write(
+                                ":red[* This needs to be the language of your meeting.]"
+                            )
+                        with col_right:
+                            selected_to_language = st.selectbox(
+                                "Which language would you like to translate to?",
+                                languages_supported,
+                                index=None,
+                                placeholder="Select a language...",
+                            )
+
+                        if selected_from_language == "English":
+                            selected_from_language = "en"
+                        elif selected_from_language == "French":
+                            selected_from_language = "fr"
+                        elif selected_from_language == "German":
+                            selected_from_language = "de"
+                        elif selected_from_language == "Italian":
+                            selected_from_language = "it"
+                        elif selected_from_language == "Japanese":
+                            selected_from_language = "ja"
+                        elif selected_from_language == "Korean":
+                            selected_from_language = "ko"
+                        elif selected_from_language == "Polish":
+                            selected_from_language = "pl"
+                        elif selected_from_language == "Portuguese":
+                            selected_from_language = "pt"
+                        elif selected_from_language == "Russian":
+                            selected_from_language = "ru"
+                        elif selected_from_language == "Spanish":
+                            selected_from_language = "es"
+                        elif selected_from_language == "Swedish":
+                            selected_from_language = "sv"
+
+                        if selected_to_language == "English":
+                            selected_to_language = "en"
+                        elif selected_to_language == "French":
+                            selected_to_language = "fr"
+                        elif selected_to_language == "German":
+                            selected_to_language = "de"
+                        elif selected_to_language == "Italian":
+                            selected_to_language = "it"
+                        elif selected_to_language == "Japanese":
+                            selected_to_language = "ja"
+                        elif selected_to_language == "Korean":
+                            selected_to_language = "ko"
+                        elif selected_to_language == "Polish":
+                            selected_to_language = "pl"
+                        elif selected_to_language == "Portuguese":
+                            selected_to_language = "pt"
+                        elif selected_to_language == "Russian":
+                            selected_to_language = "ru"
+                        elif selected_to_language == "Spanish":
+                            selected_to_language = "es"
+                        elif selected_to_language == "Swedish":
+                            selected_to_language = "sv"
+
+                        # Buttons to start and stop the transcription analysis
+                        col_start, col_stop = st.columns(2)
+                        with col_start:
+                            start_button = st.form_submit_button(
+                                "Start transcription analysis",
+                                use_container_width=True,
+                                type="secondary",
+                            )
+                        with col_stop:
+                            stop_button = st.form_submit_button(
+                                "Stop transcription analysis",
+                                use_container_width=True,
+                                type="primary",
+                            )
+
+                        # Run the get_transcription_value function
+                        selected_transcription_value = get_transcription_value(
+                            selected_transcription_key
+                        )
+
+                        # If the start button is clicked
+                        if start_button:
+                            # If at least one checkbox is checked
+                            if (
+                                summary_checkbox
+                                or agenda_checkbox
+                                or participants_checkbox
+                                or sentiment_checkbox
+                                or translation_checkbox
+                                or insights_checkbox
+                            ):
+                                # If the user has selected the translation checkbox
+                                if translation_checkbox:
+                                    # If the user has selected a language to translate from and to
+                                    if (
+                                        selected_from_language
+                                        and selected_to_language is not None
+                                    ):
+                                        # Show a spinner while analyzing the transcription
+                                        with st.spinner("Analyzing transcription..."):
+                                            # Run the analyze_transcription function
+                                            analysis_result = analyze_transcription(
+                                                selected_transcription_value,
+                                                summary_checkbox,
+                                                agenda_checkbox,
+                                                participants_checkbox,
+                                                sentiment_checkbox,
+                                                translation_checkbox,
+                                                selected_from_language,
+                                                selected_to_language,
+                                                insights_checkbox,
+                                            )
+                                    # If the user has not selected a language to translate from and to, show a toast notification
+                                    else:
+                                        st.toast(
+                                            body="Please select a language to translate from and to.",
+                                            icon="❌",
+                                        )
+                                # If the user has not selected the translation checkbox
+                                else:
+                                    # Show a spinner while analyzing the transcription
+                                    with st.spinner("Analyzing transcription..."):
+                                        # Run the analyze_transcription function
+                                        analysis_result = analyze_transcription(
+                                            selected_transcription_value,
+                                            summary_checkbox,
+                                            agenda_checkbox,
+                                            participants_checkbox,
+                                            sentiment_checkbox,
+                                            translation_checkbox,
+                                            selected_from_language,
+                                            selected_to_language,
+                                            insights_checkbox,
+                                        )
+                            else:
+                                # If no checkbox is checked
+                                # Show a toast notification
+                                st.toast(
+                                    body="Please select at least one analysis option to analyze.",
+                                    icon="❌",
+                                )
+                else:
+                    # EDGE CASE!
+                    # If the user has not selected a transcription to analyze
+                    # Add an error message
+                    st.error(
+                        "No transcription is selected to analyze. Please select a transcription to analyze.",
+                        icon="❗",
                     )
+
+                    # Add a CTA button to go back to Step 2
+                    col1, col2, col3 = st.columns(3)
+                    with col1:
+                        st.write("&nbsp;")
+                    with col2:
+                        cta_button = st.button(
+                            "Select a transcription", use_container_width=True
+                        )
+                    with col3:
+                        st.write("&nbsp;")
+
+                    if cta_button:
+                        st.switch_page("pages/2_Select_a_transcription.py")
             else:
                 # If the user has not selected a transcription to analyze
                 # Add an error message
@@ -308,7 +525,7 @@ def main():
                 st.write("&nbsp;")
             with col2:
                 cta_button = st.button(
-                    "Start using ArcticAlly", use_container_width=True
+                    "Start using ArcticAlly 🚀", use_container_width=True
                 )
             with col3:
                 st.write("&nbsp;")
@@ -318,167 +535,104 @@ def main():
                 st.switch_page("pages/1_Upload_a_meeting.py")
 
         if analysis_result:
-            # Get the summary, keywords, agenda, participants and sentiment_df from the analysis result
-            summary, keywords, agenda, participants, sentiment_df = analysis_result
+            # Get the summary, keywords, agenda, participants, sentiment_df, translation and insights from the analysis result
+            # Unpack only the non-None values from analysis_result
+            (
+                summary,
+                keywords,
+                agenda,
+                participants,
+                sentiment_df,
+                translation,
+                insights,
+            ) = analysis_result
 
-            # Add tabs to display the different sections of the analysis
-            tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(
-                [
-                    "Summary",
-                    "Agenda",
-                    "Participants",
-                    "Sentiment",
-                    "Translation",
-                    "Insights",
-                ]
+            # Add a spacer
+            st.markdown(
+                "<div style='margin-top: 1rem;'>&nbsp;</div>", unsafe_allow_html=True
             )
 
+            # Create a list to store the names of the tabs
+            tab_names = []
+
+            # Check if there's a summary and keywords result
             if summary and keywords:
-                with tab1:
-                    # Summary
-                    st.header("Summary of the meeting")
-                    st.write(summary)
+                tab_names.append("Summary")
 
-                    # Keywords
-                    # Parse the JSON string into a dictionary
-                    keywords_dict = json.loads(keywords)
-
-                    # Access the "keywords" key in the dictionary
-                    get_keywords = keywords_dict["keywords"]
-
-                    # Wrap each keyword with a <span> element
-                    keyword_spans = [
-                        f"<span>:blue-background[{keyword}]</span>"
-                        for keyword in get_keywords
-                    ]
-
-                    # Concatenate the <span> elements together
-                    keyword_string_with_spans = " ".join(keyword_spans)
-
-                    # Display the keywords with <span> elements
-                    st.markdown(
-                        f"Keywords: {keyword_string_with_spans}",
-                        unsafe_allow_html=True,
-                    )
-
+            # Check if there's an agenda result
             if agenda:
-                with tab2:
-                    st.header("Agenda of the meeting")
-                    st.write(agenda)
+                tab_names.append("Agenda")
 
+            # Check if there's a participants result
             if participants:
-                with tab3:
-                    st.header("Participants of the meeting")
-                    st.write(participants)
+                tab_names.append("Participants")
 
+            # Check if there's a sentiment result
             if not sentiment_df.empty:
-                with tab4:
-                    st.header("Sentiment of the meeting")
-                    st.line_chart(sentiment_df["Sentiment"])
-                    st.data_editor(sentiment_df, disabled=True)
+                tab_names.append("Sentiment")
 
-            with tab5:
-                st.header("Translation")
+            # Check if there's a translation result
+            if translation:
+                tab_names.append("Translation")
 
-                @st.experimental_fragment
-                def get_languages():
-                    # Add a selectbox to select the language to translate from and to
-                    col_left, col_right = st.columns(2)
-                    with col_left:
-                        selected_from_language = st.selectbox(
-                            "Which language would you like to translate from?:red[*]",
-                            languages_supported,
-                            index=None,
-                            placeholder="Select a language...",
+            # Check if there's an insights result'
+            if insights:
+                tab_names.append("Insights")
+
+            # Add tabs only if there are names in the list
+            if tab_names:
+                st.header("Meeting analysis")
+
+                tabs = st.tabs(tab_names)
+
+                if "Summary" in tab_names:
+                    with tabs[tab_names.index("Summary")]:
+                        st.subheader("Summary of the meeting")
+                        st.write(summary)
+
+                        # Keywords
+                        # Parse the JSON string into a dictionary
+                        keywords_dict = json.loads(keywords)
+
+                        # Access the "keywords" key in the dictionary
+                        get_keywords = keywords_dict["keywords"]
+
+                        # Wrap each keyword with a <span> element
+                        keyword_spans = [
+                            f"<span>:blue-background[{keyword}]</span>"
+                            for keyword in get_keywords
+                        ]
+
+                        # Concatenate the <span> elements together
+                        keyword_string_with_spans = " ".join(keyword_spans)
+
+                        # Display the keywords with <span> elements
+                        st.markdown(
+                            f"Keywords: {keyword_string_with_spans}",
+                            unsafe_allow_html=True,
                         )
-                        st.write(
-                            ":red[* This needs to be the language of your meeting.]"
-                        )
-                    with col_right:
-                        selected_to_language = st.selectbox(
-                            "Which language would you like to translate to?",
-                            languages_supported,
-                            index=None,
-                            placeholder="Select a language...",
-                        )
+                if "Agenda" in tab_names:
+                    with tabs[tab_names.index("Agenda")]:
+                        st.subheader("Agenda of the meeting")
+                        st.write(agenda)
+                if "Participants" in tab_names:
+                    with tabs[tab_names.index("Participants")]:
+                        st.subheader("Participants of the meeting")
+                        st.write(participants)
+                if "Sentiment" in tab_names:
+                    with tabs[tab_names.index("Sentiment")]:
+                        st.subheader("Sentiment of the meeting")
+                        st.line_chart(sentiment_df["Sentiment"])
+                        st.data_editor(sentiment_df, disabled=True)
+                if "Translation" in tab_names:
+                    with tabs[tab_names.index("Translation")]:
+                        st.subheader("Translation of the meeting")
+                        st.write(translation)
+                if "Insights" in tab_names:
+                    with tabs[tab_names.index("Insights")]:
+                        st.subheader("Insights of the meeting")
+                        st.write(insights)
 
-                    if selected_from_language == "English":
-                        selected_from_language = "en"
-                    elif selected_from_language == "French":
-                        selected_from_language = "fr"
-                    elif selected_from_language == "German":
-                        selected_from_language = "de"
-                    elif selected_from_language == "Italian":
-                        selected_from_language = "it"
-                    elif selected_from_language == "Japanese":
-                        selected_from_language = "ja"
-                    elif selected_from_language == "Korean":
-                        selected_from_language = "ko"
-                    elif selected_from_language == "Polish":
-                        selected_from_language = "pl"
-                    elif selected_from_language == "Portuguese":
-                        selected_from_language = "pt"
-                    elif selected_from_language == "Russian":
-                        selected_from_language = "ru"
-                    elif selected_from_language == "Spanish":
-                        selected_from_language = "es"
-                    elif selected_from_language == "Swedish":
-                        selected_from_language = "sv"
-
-                    if selected_to_language == "English":
-                        selected_to_language = "en"
-                    elif selected_to_language == "French":
-                        selected_to_language = "fr"
-                    elif selected_to_language == "German":
-                        selected_to_language = "de"
-                    elif selected_to_language == "Italian":
-                        selected_to_language = "it"
-                    elif selected_to_language == "Japanese":
-                        selected_to_language = "ja"
-                    elif selected_to_language == "Korean":
-                        selected_to_language = "ko"
-                    elif selected_to_language == "Polish":
-                        selected_to_language = "pl"
-                    elif selected_to_language == "Portuguese":
-                        selected_to_language = "pt"
-                    elif selected_to_language == "Russian":
-                        selected_to_language = "ru"
-                    elif selected_to_language == "Spanish":
-                        selected_to_language = "es"
-                    elif selected_to_language == "Swedish":
-                        selected_to_language = "sv"
-
-                    # Get the selected transcription from the session state
-                    selected_transcription_key = st.session_state[
-                        "selected_transcription"
-                    ]
-
-                    # Run the get_transcription_value function
-                    selected_transcription_value = get_transcription_value(
-                        selected_transcription_key
-                    )
-
-                    if selected_from_language and selected_to_language:
-                        col1, col2, col3 = st.columns(3)
-                        with col1:
-                            st.write("&nbsp;")
-                        with col2:
-                            cta_button = st.button(
-                                "Start translating",
-                                use_container_width=True,
-                                on_click=translate_transcription(
-                                    selected_transcription_value,
-                                    selected_from_language,
-                                    selected_to_language,
-                                ),
-                            )
-                        with col3:
-                            st.write("&nbsp;")
-
-                get_languages()
-
-            with tab6:
-                st.header("Insights of the meeting")
     finally:
         if session:
             # Close Snowflake session
