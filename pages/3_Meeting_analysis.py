@@ -146,7 +146,6 @@ def analyze_transcription(
     translation_checkbox,
     selected_from_language,
     selected_to_language,
-    insights_checkbox,
 ):
     # Initialize variables to store analysis results
     summary = None
@@ -155,7 +154,6 @@ def analyze_transcription(
     participants = None
     sentiment_df = pd.DataFrame()
     translation = None
-    insights = None
 
     # If the summary checkbox is checked
     if summary_checkbox:
@@ -210,10 +208,7 @@ def analyze_transcription(
             session=session,
         )
 
-    # If the insights checkbox is checked
-    # Todo
-
-    return summary, keywords, agenda, participants, sentiment_df, translation, insights
+    return summary, keywords, agenda, participants, sentiment_df, translation
 
 
 # Languages that are supported for the Translate function
@@ -289,7 +284,7 @@ def main():
                         )
 
                         # Add checkboxes to select the analysis options
-                        col1, col2, col3, col4 = st.columns(4)
+                        col1, col2, col3, col4, col5 = st.columns(5)
                         with col1:
                             summary_checkbox = st.checkbox(
                                 "Summary",
@@ -310,15 +305,10 @@ def main():
                                 "Sentiment",
                                 key="sentiment_checkbox",
                             )
-                        with col1:
+                        with col5:
                             translation_checkbox = st.checkbox(
                                 "Translation",
                                 key="translation_checkbox",
-                            )
-                        with col2:
-                            insights_checkbox = st.checkbox(
-                                "Insights",
-                                key="insights_checkbox",
                             )
 
                         # Add a selectbox to select the language to translate from and to
@@ -416,7 +406,6 @@ def main():
                                 or participants_checkbox
                                 or sentiment_checkbox
                                 or translation_checkbox
-                                or insights_checkbox
                             ):
                                 # If the user has selected the translation checkbox
                                 if translation_checkbox:
@@ -437,7 +426,6 @@ def main():
                                                 translation_checkbox,
                                                 selected_from_language,
                                                 selected_to_language,
-                                                insights_checkbox,
                                             )
                                     # If the user has not selected a language to translate from and to, show a toast notification
                                     else:
@@ -459,7 +447,6 @@ def main():
                                             translation_checkbox,
                                             selected_from_language,
                                             selected_to_language,
-                                            insights_checkbox,
                                         )
                             else:
                                 # If no checkbox is checked
@@ -535,7 +522,7 @@ def main():
                 st.switch_page("pages/1_Upload_a_meeting.py")
 
         if analysis_result:
-            # Get the summary, keywords, agenda, participants, sentiment_df, translation and insights from the analysis result
+            # Get the summary, keywords, agenda, participants, sentiment_df and translation from the analysis result
             # Unpack only the non-None values from analysis_result
             (
                 summary,
@@ -544,7 +531,6 @@ def main():
                 participants,
                 sentiment_df,
                 translation,
-                insights,
             ) = analysis_result
 
             # Add a spacer
@@ -574,10 +560,6 @@ def main():
             # Check if there's a translation result
             if translation:
                 tab_names.append("Translation")
-
-            # Check if there's an insights result'
-            if insights:
-                tab_names.append("Insights")
 
             # Add tabs only if there are names in the list
             if tab_names:
@@ -628,10 +610,6 @@ def main():
                     with tabs[tab_names.index("Translation")]:
                         st.subheader("Translation of the meeting")
                         st.write(translation)
-                if "Insights" in tab_names:
-                    with tabs[tab_names.index("Insights")]:
-                        st.subheader("Insights of the meeting")
-                        st.write(insights)
 
     finally:
         if session:
