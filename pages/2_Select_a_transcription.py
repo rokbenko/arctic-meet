@@ -117,7 +117,7 @@ def main():
             st.write("&nbsp;")
         with col2:
             cta_button = st.button(
-                "Start using ArcticAlly 🚀", use_container_width=True
+                "Start using ArcticAlly 🚀", type="primary", use_container_width=True
             )
         with col3:
             st.write("&nbsp;")

@@ -38,14 +38,19 @@ def main():
     st.markdown(
         """
             <h1 style='text-align: center;'>❄️ ArcticAlly ❄️</h1>
-            <h4 style='text-align: center; margin-bottom: 1rem;'>AI meeting assistant,<br> always on your side 🙌</h4>
+            <h4 style='text-align: center; margin-bottom: 0.5rem;'>AI meeting assistant,<br> always on your side 🙌</h4>
         """,
+        unsafe_allow_html=True,
+    )
+
+    st.markdown(
+        """<div style='width: 100%; text-align: center; margin-bottom: 1rem;'>👉 Give ArcticAlly a ⭐ star on <a href='https://github.com/rokbenko/arctic-ally'>GitHub</a>. 👈</div>""",
         unsafe_allow_html=True,
     )
 
     # Add a description
     st.write(
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam tempus at dolor ultrices viverra. Aliquam hendrerit auctor tellus in sagittis. Sed diam nunc, maximus vitae urna nec, tempus porttitor lacus. Pellentesque eros nunc, imperdiet vitae malesuada quis, finibus non est. Duis odio lorem, pretium quis pulvinar non, pharetra eget leo. Ut porta venenatis diam, et hendrerit quam tristique at. Praesent id euismod augue, in tincidunt eros. Pellentesque felis nibh, tempus et orci in, sagittis maximus neque. Nam et interdum diam. Suspendisse potenti. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum lectus ex, hendrerit ac ex at, porttitor sagittis erat. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nunc auctor ante in fringilla ultricies."
+        "Introducing ArcticAlly, your AI meeting assistant powered by Snowflake. Developed for the Snowflake June 2024 hackathon, ArcticAlly offers comprehensive meeting analysis with a suite of advanced features. From summarization to agenda extraction, participant identification, sentiment analysis, and translation capabilities, ArcticAlly empowers you to effortlessly uncover valuable insights. With an intuitive Streamlit GUI and seamless integration of cutting-edge technologies, especially the Snowflake Arctic LLM, ArcticAlly revolutionizes your meeting experience."
     )
 
     # Add a CTA button to continue with Step 1
@@ -53,7 +58,9 @@ def main():
     with col1:
         st.write("&nbsp;")
     with col2:
-        cta_button = st.button("Start using ArcticAlly 🚀", use_container_width=True)
+        cta_button = st.button(
+            "Start using ArcticAlly 🚀", type="primary", use_container_width=True
+        )
     with col3:
         st.write("&nbsp;")
 

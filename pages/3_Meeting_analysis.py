@@ -515,7 +515,9 @@ def main():
                 st.write("&nbsp;")
             with col2:
                 cta_button = st.button(
-                    "Start using ArcticAlly 🚀", use_container_width=True
+                    "Start using ArcticAlly 🚀",
+                    type="primary",
+                    use_container_width=True,
                 )
             with col3:
                 st.write("&nbsp;")
@@ -691,6 +693,12 @@ def main():
                     with tabs[tab_names.index("Translation")]:
                         st.subheader("Translation of the meeting")
                         st.write(translation)
+
+                        # Add an info message
+                        st.info(
+                            body="If the translation is cut off, it's because the transcription is too long and hits the context limit of the LLM. This will probably be solved in the future if the Translate Snowflake Cortex LLM function gets an update.",
+                            icon="ℹ️",
+                        )
 
     finally:
         if session:
