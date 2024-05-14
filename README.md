@@ -172,7 +172,7 @@ The app works with the following tech stack:
 | ArcticAlly has an upload limitation of 5 GB, which is probably enough for most meetings. However, the problem might be that a long meeting, although under 5 GB, could produce a large transcription that might hit the [context window](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#model-restrictions) of the Snowflake Arctic LLM when used with the [`Complete`](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#complete) Snowflake Cortex LLM function (i.e., 4,096 tokens as of April 2024). | It's a current model limitation that will probably be solved in the future if the Snowflake Arctic LLM gets an update. | Low or none, if the model gets an update |
 | ArcticAlly is pretty slow when getting the transcription using Whisper via Hugging Face. For example, the [sample meeting](https://github.com/rokbenko/arctic-ally/blob/main/sample_meeting.mp4) is only 1 minute long, and it takes ArcticAlly a few minutes to get the transcription. | ? | ? |
 | ArctcAlly's *Participant identification* analysis feature is not very robust because it depends on names being mentioned in the meeting at any point. It might happen that ArcticAlly doesn't find all participants but only some of them. The [sample meeting](https://github.com/rokbenko/arctic-ally/blob/main/sample_meeting.mp4) is a perfect example of a transcription, which is not likely to always be the case in real life. | ? | ? |
-| ArcticAlly's *Translation* analysis feature almost always hits the context window of the [`Translate`](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#translate) Snowflake Cortex LLM function (i.e., 1,024 tokens as of April 2024). Even if you upload a very short meeting, the transcription will be too large to get the full translation back. This is the reason the translation is cut off in most cases. | It's a current function limitation that will probably be solved in the future if the [`Translate`](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#translate) Snowflake Cortex LLM function gets an update. | Low or none, if the function gets an update |
+| ArcticAlly's *Translation* analysis feature almost always hits the [context window](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#model-restrictions) of the [`Translate`](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#translate) Snowflake Cortex LLM function (i.e., 1,024 tokens as of April 2024). Even if you upload a very short meeting, the transcription will be too large to get the full translation back. This is the reason the translation is cut off in most cases. | It's a current function limitation that will probably be solved in the future if the [`Translate`](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#translate) Snowflake Cortex LLM function gets an update. | Low or none, if the function gets an update |
 
 Despite all the limitations written above, ArcticAlly, in my personal view (\*trying hard to be objective\* 😅), is very impressive considering that:
 
@@ -184,7 +184,7 @@ Further improvements to the Snowflake Arctic LLM or Snowflake Cortex LLM functio
 
 <br>
 
-## Screenshots
+## 🎥 Screenshots 🎥
 
 Coming soon... ✨
 
