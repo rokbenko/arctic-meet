@@ -697,6 +697,22 @@ def main():
             # Close Snowflake session
             session.close()
 
+    # Add "Powered by Snowflake" logo at the bottom
+    st.markdown(
+        "<div style='margin-bottom: 2rem;'>&nbsp;</div>", unsafe_allow_html=True
+    )
+    col1, col2, col3, col4, col5 = st.columns(5)
+    with col1:
+        st.write("&nbsp;")
+    with col2:
+        st.write("&nbsp;")
+    with col3:
+        st.image("powered_by_snowflake_stacked_white.png", use_column_width=True)
+    with col4:
+        st.write("&nbsp;")
+    with col5:
+        st.write("&nbsp;")
+
     # Add a sidebar
     with st.sidebar:
         # Add a copyright notice and social media links at the bottom of the sidebar

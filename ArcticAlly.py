@@ -3,7 +3,7 @@ import streamlit as st
 
 # Set the page configuration
 st.set_page_config(
-    page_title="ArcticAlly – 100%-free AI meeting assistant, always on your side",
+    page_title="ArcticAlly – AI meeting assistant, always on your side 🙌",
     page_icon="❄️",
     layout="centered",
     menu_items={
@@ -38,7 +38,7 @@ def main():
     st.markdown(
         """
             <h1 style='text-align: center;'>❄️ ArcticAlly ❄️</h1>
-            <h4 style='text-align: center; margin-bottom: 1rem;'>100%-free AI meeting assistant,<br> always on your side 🙌</h4>
+            <h4 style='text-align: center; margin-bottom: 1rem;'>AI meeting assistant,<br> always on your side 🙌</h4>
         """,
         unsafe_allow_html=True,
     )
@@ -60,6 +60,22 @@ def main():
     # If the CTA button is clicked, switch pages
     if cta_button:
         st.switch_page("pages/1_Upload_a_meeting.py")
+
+    # Add "Powered by Snowflake" logo at the bottom
+    st.markdown(
+        "<div style='margin-bottom: 2rem;'>&nbsp;</div>", unsafe_allow_html=True
+    )
+    col1, col2, col3, col4, col5 = st.columns(5)
+    with col1:
+        st.write("&nbsp;")
+    with col2:
+        st.write("&nbsp;")
+    with col3:
+        st.image("powered_by_snowflake_stacked_white.png", use_column_width=True)
+    with col4:
+        st.write("&nbsp;")
+    with col5:
+        st.write("&nbsp;")
 
     # Add a sidebar
     with st.sidebar:
