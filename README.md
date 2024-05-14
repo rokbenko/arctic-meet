@@ -174,13 +174,13 @@ The app works with the following tech stack:
 | ArctcAlly's *Participant identification* analysis feature is not very robust because it depends on names being mentioned in the meeting at any point. It might happen that ArcticAlly doesn't find all participants but only some of them. The [sample meeting](https://github.com/rokbenko/arctic-ally/blob/main/sample_meeting.mp4) is a perfect example of a transcription, which is not likely to always be the case in real life. | ? | ? |
 | ArcticAlly's *Translation* analysis feature almost always hits the [context window](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#model-restrictions) of the [`Translate`](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#translate) Snowflake Cortex LLM function (i.e., 1,024 tokens as of April 2024). Even if you upload a very short meeting, the transcription will be too large to get the full translation back. This is the reason the translation is cut off in most cases. | It's a current function limitation that will probably be solved in the future if the [`Translate`](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#translate) Snowflake Cortex LLM function gets an update. | Low or none, if the function gets an update |
 
-Despite all the limitations written above, ArcticAlly, in my personal view (\*trying hard to be objective\* 😅), is very impressive considering that:
+Despite all the limitations mentioned above, ArcticAlly, in my humble attempt to maintain objectivity 😅, is pretty impressive considering that:
 
-- ArcticAlly was developed in 8 days by me only.
-- The Snowflake Arctic LLM was added to the Snowflake Cortex LLM functions 8 days ago, as of writing this.
-- The Snowflake Arctic LLM was announced 20 days ago, as of writing this.
+- ArcticAlly was developed in just 8 days by 1 person (i.e., me).
+- The Snowflake Arctic LLM was added to the Snowflake Cortex LLM functions only 8 days ago, at the time of writing this.
+- The Snowflake Arctic LLM was announced only 20 days ago, at the time of writing this.
 
-Further improvements to the Snowflake Arctic LLM or Snowflake Cortex LLM functions could make ArcticAlly even more impressive.
+ArcticAlly could become even more awesome by making improvements to either the Snowflake Arctic LLM or Snowflake Cortex LLM functions. This is just the beginning. There's a lot of room for growth and improvement ahead for ArcticAlly as the technology evolves.
 
 <br>
 
