@@ -156,7 +156,7 @@ def main():
                     )
                     def load_model(transcription):
                         pipe = pipeline(
-                            "automatic-speech-recognition", "openai/whisper-large-v3"
+                            "automatic-speech-recognition", "openai/whisper-tiny"
                         )
 
                         return pipe(transcription)
