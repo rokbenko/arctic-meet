@@ -11,4 +11,4 @@ torch==2.3.0+cpu
 torchvision==0.18.0
 torchaudio==2.3.0
 
-ffmpeg==7.0
+ffmpeg
