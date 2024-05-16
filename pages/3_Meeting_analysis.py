@@ -29,9 +29,17 @@ if (
     or not connection_params["user"]
     or not connection_params["password"]
 ):
-    st.sidebar.write(
-        "#### ArcticAlly uses Snowflake Cortex to analyze meetings. Please set your Snowflake credentials below."
-    )
+    with st.sidebar:
+        st.write(
+            "#### ArcticAlly uses Snowflake Cortex to analyze meetings. Please set your Snowflake credentials below."
+        )
+
+        st.markdown(
+            """
+                <div style='margin-bottom: 1rem;'>For instructions on how to set up Snowflake credentials, see the <a href="https://github.com/rokbenko/arctic-ally?tab=readme-ov-file#-getting-started-" target="_blank" style='color: black;'>GitHub repository</a>.</div>
+            """,
+            unsafe_allow_html=True,
+        )
 
 # If account is not set in the secrets, ask the user to set it in the sidebar
 if not connection_params["account"]:
@@ -62,6 +70,13 @@ if not connection_params["password"]:
     )
     if password_from_input:
         connection_params["password"] = password_from_input
+
+    st.sidebar.markdown(
+        """
+            <div>&nbsp;</div>
+        """,
+        unsafe_allow_html=True,
+    )
 
 # Initialize session variable to None, so in case at least one secret is not set, the finally block will not throw an error "NameError: name 'session' is not defined"
 session = None
@@ -277,144 +292,179 @@ def main():
                     if cta_button:
                         st.switch_page("pages/2_Select_a_transcription.py")
 
-                    # Create the form for the user to select analysis features
-                    with st.form(key="analysis_form"):
-                        # Add a text box to let know the user which analysis features are available
-                        st.write(
-                            "Please select the analysis features you would like to include:"
+                    # If Snowflake credentials are not provided
+                    if (
+                        not connection_params["account"]
+                        or not connection_params["user"]
+                        or not connection_params["password"]
+                    ):
+                        # Add an error message
+                        st.error(
+                            body="Please provide your Snowflake credentials in the sidebar. For every credential you provide, you'll need to press Enter to apply. After all your credentials are provided, the app will automatically refresh, and you'll be able to analyze your meeting.",
+                            icon="❗",
                         )
-
-                        # Add checkboxes to select the analysis features
-                        col1, col2, col3, col4, col5 = st.columns(5)
-                        with col1:
-                            summary_checkbox = st.checkbox(
-                                "Summary",
-                                key="summary_checkbox",
-                            )
-                        with col2:
-                            agenda_checkbox = st.checkbox(
-                                "Agenda",
-                                key="agenda_checkbox",
-                            )
-                        with col3:
-                            participants_checkbox = st.checkbox(
-                                "Participants",
-                                key="participants_checkbox",
-                            )
-                        with col4:
-                            sentiment_checkbox = st.checkbox(
-                                "Sentiment",
-                                key="sentiment_checkbox",
-                            )
-                        with col5:
-                            translation_checkbox = st.checkbox(
-                                "Translation",
-                                key="translation_checkbox",
-                            )
-
-                        # Add a selectbox to select the language to translate from and to
-                        col_left, col_right = st.columns(2)
-                        with col_left:
-                            selected_from_language = st.selectbox(
-                                "Which language would you like to translate from?:red[*]",
-                                languages_supported,
-                                index=None,
-                                placeholder="Select a language...",
-                            )
+                    else:
+                        # Create the form for the user to select analysis features
+                        with st.form(key="analysis_form"):
+                            # Add a text box to let know the user which analysis features are available
                             st.write(
-                                ":red[* This needs to be the language of your meeting.]"
-                            )
-                        with col_right:
-                            selected_to_language = st.selectbox(
-                                "Which language would you like to translate to?",
-                                languages_supported,
-                                index=None,
-                                placeholder="Select a language...",
+                                "Please select the analysis features you would like to include:"
                             )
 
-                        if selected_from_language == "English":
-                            selected_from_language = "en"
-                        elif selected_from_language == "French":
-                            selected_from_language = "fr"
-                        elif selected_from_language == "German":
-                            selected_from_language = "de"
-                        elif selected_from_language == "Italian":
-                            selected_from_language = "it"
-                        elif selected_from_language == "Japanese":
-                            selected_from_language = "ja"
-                        elif selected_from_language == "Korean":
-                            selected_from_language = "ko"
-                        elif selected_from_language == "Polish":
-                            selected_from_language = "pl"
-                        elif selected_from_language == "Portuguese":
-                            selected_from_language = "pt"
-                        elif selected_from_language == "Russian":
-                            selected_from_language = "ru"
-                        elif selected_from_language == "Spanish":
-                            selected_from_language = "es"
-                        elif selected_from_language == "Swedish":
-                            selected_from_language = "sv"
+                            # Add checkboxes to select the analysis features
+                            col1, col2, col3, col4, col5 = st.columns(5)
+                            with col1:
+                                summary_checkbox = st.checkbox(
+                                    "Summary",
+                                    key="summary_checkbox",
+                                )
+                            with col2:
+                                agenda_checkbox = st.checkbox(
+                                    "Agenda",
+                                    key="agenda_checkbox",
+                                )
+                            with col3:
+                                participants_checkbox = st.checkbox(
+                                    "Participants",
+                                    key="participants_checkbox",
+                                )
+                            with col4:
+                                sentiment_checkbox = st.checkbox(
+                                    "Sentiment",
+                                    key="sentiment_checkbox",
+                                )
+                            with col5:
+                                translation_checkbox = st.checkbox(
+                                    "Translation",
+                                    key="translation_checkbox",
+                                )
 
-                        if selected_to_language == "English":
-                            selected_to_language = "en"
-                        elif selected_to_language == "French":
-                            selected_to_language = "fr"
-                        elif selected_to_language == "German":
-                            selected_to_language = "de"
-                        elif selected_to_language == "Italian":
-                            selected_to_language = "it"
-                        elif selected_to_language == "Japanese":
-                            selected_to_language = "ja"
-                        elif selected_to_language == "Korean":
-                            selected_to_language = "ko"
-                        elif selected_to_language == "Polish":
-                            selected_to_language = "pl"
-                        elif selected_to_language == "Portuguese":
-                            selected_to_language = "pt"
-                        elif selected_to_language == "Russian":
-                            selected_to_language = "ru"
-                        elif selected_to_language == "Spanish":
-                            selected_to_language = "es"
-                        elif selected_to_language == "Swedish":
-                            selected_to_language = "sv"
+                            # Add a selectbox to select the language to translate from and to
+                            col_left, col_right = st.columns(2)
+                            with col_left:
+                                selected_from_language = st.selectbox(
+                                    "Which language would you like to translate from?:red[*]",
+                                    languages_supported,
+                                    index=None,
+                                    placeholder="Select a language...",
+                                )
+                                st.write(
+                                    ":red[* This needs to be the language of your meeting.]"
+                                )
+                            with col_right:
+                                selected_to_language = st.selectbox(
+                                    "Which language would you like to translate to?",
+                                    languages_supported,
+                                    index=None,
+                                    placeholder="Select a language...",
+                                )
 
-                        # Buttons to start and stop the transcription analysis
-                        col_start, col_stop = st.columns(2)
-                        with col_start:
-                            start_button = st.form_submit_button(
-                                "Start transcription analysis",
-                                use_container_width=True,
-                                type="secondary",
+                            if selected_from_language == "English":
+                                selected_from_language = "en"
+                            elif selected_from_language == "French":
+                                selected_from_language = "fr"
+                            elif selected_from_language == "German":
+                                selected_from_language = "de"
+                            elif selected_from_language == "Italian":
+                                selected_from_language = "it"
+                            elif selected_from_language == "Japanese":
+                                selected_from_language = "ja"
+                            elif selected_from_language == "Korean":
+                                selected_from_language = "ko"
+                            elif selected_from_language == "Polish":
+                                selected_from_language = "pl"
+                            elif selected_from_language == "Portuguese":
+                                selected_from_language = "pt"
+                            elif selected_from_language == "Russian":
+                                selected_from_language = "ru"
+                            elif selected_from_language == "Spanish":
+                                selected_from_language = "es"
+                            elif selected_from_language == "Swedish":
+                                selected_from_language = "sv"
+
+                            if selected_to_language == "English":
+                                selected_to_language = "en"
+                            elif selected_to_language == "French":
+                                selected_to_language = "fr"
+                            elif selected_to_language == "German":
+                                selected_to_language = "de"
+                            elif selected_to_language == "Italian":
+                                selected_to_language = "it"
+                            elif selected_to_language == "Japanese":
+                                selected_to_language = "ja"
+                            elif selected_to_language == "Korean":
+                                selected_to_language = "ko"
+                            elif selected_to_language == "Polish":
+                                selected_to_language = "pl"
+                            elif selected_to_language == "Portuguese":
+                                selected_to_language = "pt"
+                            elif selected_to_language == "Russian":
+                                selected_to_language = "ru"
+                            elif selected_to_language == "Spanish":
+                                selected_to_language = "es"
+                            elif selected_to_language == "Swedish":
+                                selected_to_language = "sv"
+
+                            # Buttons to start and stop the transcription analysis
+                            col_start, col_stop = st.columns(2)
+                            with col_start:
+                                start_button = st.form_submit_button(
+                                    "Start transcription analysis",
+                                    use_container_width=True,
+                                    type="secondary",
+                                )
+                            with col_stop:
+                                stop_button = st.form_submit_button(
+                                    "Stop transcription analysis",
+                                    use_container_width=True,
+                                    type="primary",
+                                )
+
+                            # Run the get_transcription_value function
+                            selected_transcription_value = get_transcription_value(
+                                selected_transcription_key
                             )
-                        with col_stop:
-                            stop_button = st.form_submit_button(
-                                "Stop transcription analysis",
-                                use_container_width=True,
-                                type="primary",
-                            )
 
-                        # Run the get_transcription_value function
-                        selected_transcription_value = get_transcription_value(
-                            selected_transcription_key
-                        )
-
-                        # If the start button is clicked
-                        if start_button:
-                            # If at least one checkbox is checked
-                            if (
-                                summary_checkbox
-                                or agenda_checkbox
-                                or participants_checkbox
-                                or sentiment_checkbox
-                                or translation_checkbox
-                            ):
-                                # If the user has selected the translation checkbox
-                                if translation_checkbox:
-                                    # If the user has selected a language to translate from and to
-                                    if (
-                                        selected_from_language
-                                        and selected_to_language is not None
-                                    ):
+                            # If the start button is clicked
+                            if start_button:
+                                # If at least one checkbox is checked
+                                if (
+                                    summary_checkbox
+                                    or agenda_checkbox
+                                    or participants_checkbox
+                                    or sentiment_checkbox
+                                    or translation_checkbox
+                                ):
+                                    # If the user has selected the translation checkbox
+                                    if translation_checkbox:
+                                        # If the user has selected a language to translate from and to
+                                        if (
+                                            selected_from_language
+                                            and selected_to_language is not None
+                                        ):
+                                            # Show a spinner while analyzing the transcription
+                                            with st.spinner(
+                                                "Analyzing the transcription..."
+                                            ):
+                                                # Run the analyze_transcription function
+                                                analysis_result = analyze_transcription(
+                                                    selected_transcription_value,
+                                                    summary_checkbox,
+                                                    agenda_checkbox,
+                                                    participants_checkbox,
+                                                    sentiment_checkbox,
+                                                    translation_checkbox,
+                                                    selected_from_language,
+                                                    selected_to_language,
+                                                )
+                                        # If the user has not selected a language to translate from and to, show a toast notification
+                                        else:
+                                            st.toast(
+                                                body="Please select a language to translate from and to.",
+                                                icon="❌",
+                                            )
+                                    # If the user has not selected the translation checkbox
+                                    else:
                                         # Show a spinner while analyzing the transcription
                                         with st.spinner(
                                             "Analyzing the transcription..."
@@ -430,34 +480,13 @@ def main():
                                                 selected_from_language,
                                                 selected_to_language,
                                             )
-                                    # If the user has not selected a language to translate from and to, show a toast notification
-                                    else:
-                                        st.toast(
-                                            body="Please select a language to translate from and to.",
-                                            icon="❌",
-                                        )
-                                # If the user has not selected the translation checkbox
                                 else:
-                                    # Show a spinner while analyzing the transcription
-                                    with st.spinner("Analyzing the transcription..."):
-                                        # Run the analyze_transcription function
-                                        analysis_result = analyze_transcription(
-                                            selected_transcription_value,
-                                            summary_checkbox,
-                                            agenda_checkbox,
-                                            participants_checkbox,
-                                            sentiment_checkbox,
-                                            translation_checkbox,
-                                            selected_from_language,
-                                            selected_to_language,
-                                        )
-                            else:
-                                # If no checkbox is checked
-                                # Show a toast notification
-                                st.toast(
-                                    body="Please select at least one analysis feature to start the analysis.",
-                                    icon="❌",
-                                )
+                                    # If no checkbox is checked
+                                    # Show a toast notification
+                                    st.toast(
+                                        body="Please select at least one analysis feature to start the analysis.",
+                                        icon="❌",
+                                    )
                 else:
                     # EDGE CASE!
                     # If the user has not selected a transcription to analyze
@@ -726,30 +755,26 @@ def main():
         # Add a copyright notice and social media links at the bottom of the sidebar
         st.markdown(
             """
-                <div style='height: calc(100vh - 220px - 1rem - 6rem); display: flex;'>
-                    <div style='flex-grow: 1; justify-content: center; display: flex; align-items: end;'>
-                        <div style='text-align: center; padding: 1rem 2rem; background-color: rgb(14, 17, 23); border-radius: 0.5rem;'>
-                            <div style='margin-bottom: 0.5rem;'>
-                                Made with ❤️ by Rok Benko
-                            </div>
-                            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-                            <a href="https://www.linkedin.com/in/rokbenko/" style='text-decoration: none;'>
-                                <i style='color: #0072B1; margin-right: 1rem;' class="fa-xl fa-brands fa-linkedin"></i>
-                            </a>
-                            <a href="https://stackoverflow.com/users/10347145/rok-benko?tab=profile" style='text-decoration: none;'>
-                                <i style='color: #F48024; margin-right: 1rem;' class="fa-xl fa-brands fa-stack-overflow"></i>
-                            </a>
-                            <a href="https://github.com/rokbenko" style='text-decoration: none;'>
-                                <i style='color: #FFFFFF; margin-right: 1rem;' class="fa-xl fa-brands fa-github"></i>
-                            </a>
-                            <a href="https://www.youtube.com/@CodeAIwithRok" style='text-decoration: none;'>
-                                <i style='color: #FF0000; margin-right: 1rem;' class="fa-xl fa-brands fa-youtube"></i>
-                            </a>
-                            <a href="https://www.patreon.com/rokbenko" style='text-decoration: none;'>
-                                <i style='color: #F96854;' class="fa-xl fa-brands fa-patreon"></i>
-                            </a>
-                        </div>
+                <div style='text-align: center; padding: 1rem 2rem; background-color: rgb(14, 17, 23); border-radius: 0.5rem;'>
+                    <div style='margin-bottom: 0.5rem;'>
+                        Made with ❤️ by Rok Benko
                     </div>
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+                    <a href="https://www.linkedin.com/in/rokbenko/" style='text-decoration: none;'>
+                        <i style='color: #0072B1; margin-right: 1rem;' class="fa-xl fa-brands fa-linkedin"></i>
+                    </a>
+                    <a href="https://stackoverflow.com/users/10347145/rok-benko?tab=profile" style='text-decoration: none;'>
+                        <i style='color: #F48024; margin-right: 1rem;' class="fa-xl fa-brands fa-stack-overflow"></i>
+                    </a>
+                    <a href="https://github.com/rokbenko" style='text-decoration: none;'>
+                        <i style='color: #FFFFFF; margin-right: 1rem;' class="fa-xl fa-brands fa-github"></i>
+                    </a>
+                    <a href="https://www.youtube.com/@CodeAIwithRok" style='text-decoration: none;'>
+                        <i style='color: #FF0000; margin-right: 1rem;' class="fa-xl fa-brands fa-youtube"></i>
+                    </a>
+                    <a href="https://www.patreon.com/rokbenko" style='text-decoration: none;'>
+                        <i style='color: #F96854;' class="fa-xl fa-brands fa-patreon"></i>
+                    </a>
                 </div>
             """,
             unsafe_allow_html=True,

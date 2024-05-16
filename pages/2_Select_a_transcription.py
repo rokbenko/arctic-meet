@@ -146,30 +146,26 @@ def main():
         # Add a copyright notice and social media links at the bottom of the sidebar
         st.markdown(
             """
-                <div style='height: calc(100vh - 220px - 1rem - 6rem); display: flex;'>
-                    <div style='flex-grow: 1; justify-content: center; display: flex; align-items: end;'>
-                        <div style='text-align: center; padding: 1rem 2rem; background-color: rgb(14, 17, 23); border-radius: 0.5rem;'>
-                            <div style='margin-bottom: 0.5rem;'>
-                                Made with ❤️ by Rok Benko
-                            </div>
-                            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-                            <a href="https://www.linkedin.com/in/rokbenko/" style='text-decoration: none;'>
-                                <i style='color: #0072B1; margin-right: 1rem;' class="fa-xl fa-brands fa-linkedin"></i>
-                            </a>
-                            <a href="https://stackoverflow.com/users/10347145/rok-benko?tab=profile" style='text-decoration: none;'>
-                                <i style='color: #F48024; margin-right: 1rem;' class="fa-xl fa-brands fa-stack-overflow"></i>
-                            </a>
-                            <a href="https://github.com/rokbenko" style='text-decoration: none;'>
-                                <i style='color: #FFFFFF; margin-right: 1rem;' class="fa-xl fa-brands fa-github"></i>
-                            </a>
-                            <a href="https://www.youtube.com/@CodeAIwithRok" style='text-decoration: none;'>
-                                <i style='color: #FF0000; margin-right: 1rem;' class="fa-xl fa-brands fa-youtube"></i>
-                            </a>
-                            <a href="https://www.patreon.com/rokbenko" style='text-decoration: none;'>
-                                <i style='color: #F96854;' class="fa-xl fa-brands fa-patreon"></i>
-                            </a>
-                        </div>
+                <div style='text-align: center; padding: 1rem 2rem; background-color: rgb(14, 17, 23); border-radius: 0.5rem;'>
+                    <div style='margin-bottom: 0.5rem;'>
+                        Made with ❤️ by Rok Benko
                     </div>
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+                    <a href="https://www.linkedin.com/in/rokbenko/" style='text-decoration: none;'>
+                        <i style='color: #0072B1; margin-right: 1rem;' class="fa-xl fa-brands fa-linkedin"></i>
+                    </a>
+                    <a href="https://stackoverflow.com/users/10347145/rok-benko?tab=profile" style='text-decoration: none;'>
+                        <i style='color: #F48024; margin-right: 1rem;' class="fa-xl fa-brands fa-stack-overflow"></i>
+                    </a>
+                    <a href="https://github.com/rokbenko" style='text-decoration: none;'>
+                        <i style='color: #FFFFFF; margin-right: 1rem;' class="fa-xl fa-brands fa-github"></i>
+                    </a>
+                    <a href="https://www.youtube.com/@CodeAIwithRok" style='text-decoration: none;'>
+                        <i style='color: #FF0000; margin-right: 1rem;' class="fa-xl fa-brands fa-youtube"></i>
+                    </a>
+                    <a href="https://www.patreon.com/rokbenko" style='text-decoration: none;'>
+                        <i style='color: #F96854;' class="fa-xl fa-brands fa-patreon"></i>
+                    </a>
                 </div>
             """,
             unsafe_allow_html=True,
