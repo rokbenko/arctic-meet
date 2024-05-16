@@ -152,6 +152,12 @@ def get_transcription_value(selected_transcription_key):
     return selected_transcription_value
 
 
+# Use cache to analyze the uploaded meeting only once if the user keeps uploading the same meeting
+# The meeting analysis will be cached for 1 hour
+@st.cache_data(
+    ttl=3600,
+    show_spinner="ArcticAlly is caching the meeting analysis...",
+)
 # Define a function to analyze the selected transcription
 def analyze_transcription(
     selected_transcription_value,

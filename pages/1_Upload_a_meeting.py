@@ -148,10 +148,21 @@ def main():
                     with col2:
                         st.write("&nbsp;")
 
-                    pipe = pipeline(
-                        "automatic-speech-recognition", "openai/whisper-large-v3"
+                    # Use cache to transcribe the uploaded meeting only once if the user keeps uploading the same meeting
+                    # The transcription will be cached for 1 hour
+                    @st.cache_resource(
+                        ttl=3600,
+                        show_spinner="ArcticAlly is caching the transcription...",
                     )
-                    transcription = pipe(bytes_data)  # Transcribe the uploaded meeting
+                    def load_model(transcription):
+                        pipe = pipeline(
+                            "automatic-speech-recognition", "openai/whisper-large-v3"
+                        )
+
+                        return pipe(transcription)
+
+                    # Transcribe the uploaded meeting
+                    transcription = load_model(bytes_data)
 
                     step3_time = int((time.time() - start_time) * 1000)
                     with col1:
