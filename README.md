@@ -11,7 +11,10 @@
 
 ## 📖 Short description 📖
 
-ArcticAlly is a Streamlit app designed for meeting analysis using the Snowflake Arctic LLM via [Snowflake Cortex LLM functions](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions). See the video presentation or [try it yourself](https://arctic-ally.streamlit.app/) (Note: You need to set up Snowflake credentials. See [instructions](https://github.com/rokbenko/arctic-ally?tab=readme-ov-file#-getting-started-) below.)
+ArcticAlly is a Streamlit app designed for meeting analysis using the Snowflake Arctic LLM via [Snowflake Cortex LLM functions](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions).
+
+👉 See the video presentation here. (Coming soon... ✨)<br>
+👉 See the fully functioning app [here](https://arctic-ally.streamlit.app/). (Note: You need to set up Snowflake credentials. See [instructions](https://github.com/rokbenko/arctic-ally?tab=readme-ov-file#-getting-started-) below.)
 
 <sub>\*ArcticAlly was developed as a project for the [_Snowflake June 2024 hackathon_](https://arctic-streamlit-hackathon.devpost.com/).</sub>
 
