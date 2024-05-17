@@ -3,6 +3,7 @@ import streamlit as st
 from transformers import pipeline
 import time
 from datetime import datetime
+from streamlit_js_eval import get_page_location
 
 # Set the page configuration
 st.set_page_config(
@@ -67,12 +68,31 @@ def main():
     st.markdown(
         """
             <h2 style='text-align: center; margin-bottom: 0.5rem;'>❄️ Step 1: Upload a meeting ❄️</h2>
-            <p style='text-align: center; margin-bottom: 2rem;'>
+            <p style='text-align: center; margin-bottom: 0.5rem;'>
                 Start by uploading your meeting so that ArcticAlly can get a transcription of it. ArcticAlly needs a transcription, which is a written version of what was said in your meeting. This helps ArcticAlly understand and analyze your meeting in the next steps.
             </p>
         """,
         unsafe_allow_html=True,
     )
+
+    # Get the URL of the current page
+    get_url = get_page_location().get("host")
+
+    # If user uses the publicly available version of ArcticAlly hosted on Streamlit Cloud, show an important privacy notice
+    if get_url == "arctic-ally.streamlit.app":
+        st.error(
+            body="""
+                    #### ⚠️ Important privacy notice ⚠️
+
+                    Please be aware that you're currently using the publicly available version of ArcticAlly hosted on Streamlit Cloud, meaning that all transcriptions of meetings you upload here can be viewed by anyone in the world. Do not upload any sensitive or private meetings in any way.
+
+                    I strongly recommend you use the provided sample meeting, which is a simulated, dummy meeting designed for testing purposes.
+
+                    By proceeding, you acknowledge and understand the risks associated with uploading meetings to ArcticAlly. You absolve ArcticAlly and its developers of any responsibility for the consequences of such uploads.
+
+                    Thank you for your attention to this matter.
+                """,
+        )
 
     # Create the form for the user to upload a meeting
     with st.form(key="upload_form"):
