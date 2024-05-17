@@ -89,6 +89,46 @@ if (
 ):
     session = Session.builder.configs(connection_params).create()
 
+# Add a sidebar
+with st.sidebar:
+    # Add a copyright and social media links
+    st.markdown(
+        """
+            <div style='text-align: center; padding: 1rem 2rem; background-color: rgb(14, 17, 23); border-radius: 0.5rem;'>
+                <div style='margin-bottom: 0.5rem;'>
+                    Made with ❤️ by Rok Benko
+                </div>
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+                <a href="https://www.linkedin.com/in/rokbenko/" style='text-decoration: none;'>
+                    <i style='color: #0072B1; margin-right: 1rem;' class="fa-xl fa-brands fa-linkedin"></i>
+                </a>
+                <a href="https://stackoverflow.com/users/10347145/rok-benko?tab=profile" style='text-decoration: none;'>
+                    <i style='color: #F48024; margin-right: 1rem;' class="fa-xl fa-brands fa-stack-overflow"></i>
+                </a>
+                <a href="https://github.com/rokbenko" style='text-decoration: none;'>
+                    <i style='color: #FFFFFF; margin-right: 1rem;' class="fa-xl fa-brands fa-github"></i>
+                </a>
+                <a href="https://www.youtube.com/@CodeAIwithRok" style='text-decoration: none;'>
+                    <i style='color: #FF0000; margin-right: 1rem;' class="fa-xl fa-brands fa-youtube"></i>
+                </a>
+                <a href="https://www.patreon.com/rokbenko" style='text-decoration: none;'>
+                    <i style='color: #F96854;' class="fa-xl fa-brands fa-patreon"></i>
+                </a>
+            </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    # Add "Powered by Snowflake" logo
+    st.markdown("<div>&nbsp;</div>", unsafe_allow_html=True)
+    col1, col2, col3 = st.columns([0.25, 0.5, 0.25])
+    with col1:
+        st.write("&nbsp;")
+    with col2:
+        st.image("powered_by_snowflake_stacked_white.png", use_column_width=True)
+    with col3:
+        st.write("&nbsp;")
+
 # Add a custom CSS for the sidebar
 st.markdown(
     """
@@ -431,19 +471,19 @@ def main():
                                 selected_transcription_key
                             )
 
-                            # If the start button is clicked
-                            if start_button:
-                                # If at least one checkbox is checked
-                                if (
-                                    summary_checkbox
-                                    or agenda_checkbox
-                                    or participants_checkbox
-                                    or sentiment_checkbox
-                                    or translation_checkbox
-                                ):
-                                    # If the user has selected the translation checkbox
+                            # If at least one checkbox is checked
+                            if (
+                                summary_checkbox
+                                or agenda_checkbox
+                                or participants_checkbox
+                                or sentiment_checkbox
+                                or translation_checkbox
+                            ):
+                                # If the start button is clicked
+                                if start_button:
+                                    # If the user has also selected the translation checkbox among other checkboxes
                                     if translation_checkbox:
-                                        # If the user has selected a language to translate from and to
+                                        # If the user has selected a language to translate from and to, start analyzing the transcription
                                         if (
                                             selected_from_language
                                             and selected_to_language is not None
@@ -469,7 +509,7 @@ def main():
                                                 body="Please select a language to translate from and to.",
                                                 icon="❌",
                                             )
-                                    # If the user has not selected the translation checkbox
+                                    # If the user has not selected the translation checkbox but any other checkbox is checked, start analyzing the transcription
                                     else:
                                         # Show a spinner while analyzing the transcription
                                         with st.spinner(
@@ -486,11 +526,32 @@ def main():
                                                 selected_from_language,
                                                 selected_to_language,
                                             )
-                                else:
-                                    # If no checkbox is checked
+
+                                # If the stop button is clicked, stop analyzing the transcription
+                                if stop_button:
+                                    st.stop()
+
+                            # If no checkbox is checked
+                            if not (
+                                summary_checkbox
+                                or agenda_checkbox
+                                or participants_checkbox
+                                or sentiment_checkbox
+                                or translation_checkbox
+                            ):
+                                # If the start button is clicked
+                                if start_button:
                                     # Show a toast notification
                                     st.toast(
                                         body="Please select at least one analysis feature to start the analysis.",
+                                        icon="❌",
+                                    )
+
+                                # If the stop button is clicked
+                                if stop_button:
+                                    # Show a toast notification
+                                    st.toast(
+                                        body="Analyzing the transcription can be stopped only after starting it.",
                                         icon="❌",
                                     )
                 else:
@@ -739,52 +800,6 @@ def main():
         if session:
             # Close Snowflake session
             session.close()
-
-    # Add "Powered by Snowflake" logo at the bottom
-    st.markdown(
-        "<div style='margin-bottom: 2rem;'>&nbsp;</div>", unsafe_allow_html=True
-    )
-    col1, col2, col3, col4, col5 = st.columns(5)
-    with col1:
-        st.write("&nbsp;")
-    with col2:
-        st.write("&nbsp;")
-    with col3:
-        st.image("powered_by_snowflake_stacked_white.png", use_column_width=True)
-    with col4:
-        st.write("&nbsp;")
-    with col5:
-        st.write("&nbsp;")
-
-    # Add a sidebar
-    with st.sidebar:
-        # Add a copyright notice and social media links at the bottom of the sidebar
-        st.markdown(
-            """
-                <div style='text-align: center; padding: 1rem 2rem; background-color: rgb(14, 17, 23); border-radius: 0.5rem;'>
-                    <div style='margin-bottom: 0.5rem;'>
-                        Made with ❤️ by Rok Benko
-                    </div>
-                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-                    <a href="https://www.linkedin.com/in/rokbenko/" style='text-decoration: none;'>
-                        <i style='color: #0072B1; margin-right: 1rem;' class="fa-xl fa-brands fa-linkedin"></i>
-                    </a>
-                    <a href="https://stackoverflow.com/users/10347145/rok-benko?tab=profile" style='text-decoration: none;'>
-                        <i style='color: #F48024; margin-right: 1rem;' class="fa-xl fa-brands fa-stack-overflow"></i>
-                    </a>
-                    <a href="https://github.com/rokbenko" style='text-decoration: none;'>
-                        <i style='color: #FFFFFF; margin-right: 1rem;' class="fa-xl fa-brands fa-github"></i>
-                    </a>
-                    <a href="https://www.youtube.com/@CodeAIwithRok" style='text-decoration: none;'>
-                        <i style='color: #FF0000; margin-right: 1rem;' class="fa-xl fa-brands fa-youtube"></i>
-                    </a>
-                    <a href="https://www.patreon.com/rokbenko" style='text-decoration: none;'>
-                        <i style='color: #F96854;' class="fa-xl fa-brands fa-patreon"></i>
-                    </a>
-                </div>
-            """,
-            unsafe_allow_html=True,
-        )
 
 
 if __name__ == "__main__":

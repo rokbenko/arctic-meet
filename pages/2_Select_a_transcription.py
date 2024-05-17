@@ -12,6 +12,46 @@ st.set_page_config(
     },
 )
 
+# Add a sidebar
+with st.sidebar:
+    # Add a copyright and social media links
+    st.markdown(
+        """
+            <div style='text-align: center; padding: 1rem 2rem; background-color: rgb(14, 17, 23); border-radius: 0.5rem;'>
+                <div style='margin-bottom: 0.5rem;'>
+                    Made with ❤️ by Rok Benko
+                </div>
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+                <a href="https://www.linkedin.com/in/rokbenko/" style='text-decoration: none;'>
+                    <i style='color: #0072B1; margin-right: 1rem;' class="fa-xl fa-brands fa-linkedin"></i>
+                </a>
+                <a href="https://stackoverflow.com/users/10347145/rok-benko?tab=profile" style='text-decoration: none;'>
+                    <i style='color: #F48024; margin-right: 1rem;' class="fa-xl fa-brands fa-stack-overflow"></i>
+                </a>
+                <a href="https://github.com/rokbenko" style='text-decoration: none;'>
+                    <i style='color: #FFFFFF; margin-right: 1rem;' class="fa-xl fa-brands fa-github"></i>
+                </a>
+                <a href="https://www.youtube.com/@CodeAIwithRok" style='text-decoration: none;'>
+                    <i style='color: #FF0000; margin-right: 1rem;' class="fa-xl fa-brands fa-youtube"></i>
+                </a>
+                <a href="https://www.patreon.com/rokbenko" style='text-decoration: none;'>
+                    <i style='color: #F96854;' class="fa-xl fa-brands fa-patreon"></i>
+                </a>
+            </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    # Add "Powered by Snowflake" logo
+    st.markdown("<div>&nbsp;</div>", unsafe_allow_html=True)
+    col1, col2, col3 = st.columns([0.25, 0.5, 0.25])
+    with col1:
+        st.write("&nbsp;")
+    with col2:
+        st.image("powered_by_snowflake_stacked_white.png", use_column_width=True)
+    with col3:
+        st.write("&nbsp;")
+
 # Add a custom CSS for the sidebar
 st.markdown(
     """
@@ -124,52 +164,6 @@ def main():
 
         if cta_button:
             st.switch_page("pages/1_Upload_a_meeting.py")
-
-    # Add "Powered by Snowflake" logo at the bottom
-    st.markdown(
-        "<div style='margin-bottom: 2rem;'>&nbsp;</div>", unsafe_allow_html=True
-    )
-    col1, col2, col3, col4, col5 = st.columns(5)
-    with col1:
-        st.write("&nbsp;")
-    with col2:
-        st.write("&nbsp;")
-    with col3:
-        st.image("powered_by_snowflake_stacked_white.png", use_column_width=True)
-    with col4:
-        st.write("&nbsp;")
-    with col5:
-        st.write("&nbsp;")
-
-    # Add a sidebar
-    with st.sidebar:
-        # Add a copyright notice and social media links at the bottom of the sidebar
-        st.markdown(
-            """
-                <div style='text-align: center; padding: 1rem 2rem; background-color: rgb(14, 17, 23); border-radius: 0.5rem;'>
-                    <div style='margin-bottom: 0.5rem;'>
-                        Made with ❤️ by Rok Benko
-                    </div>
-                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-                    <a href="https://www.linkedin.com/in/rokbenko/" style='text-decoration: none;'>
-                        <i style='color: #0072B1; margin-right: 1rem;' class="fa-xl fa-brands fa-linkedin"></i>
-                    </a>
-                    <a href="https://stackoverflow.com/users/10347145/rok-benko?tab=profile" style='text-decoration: none;'>
-                        <i style='color: #F48024; margin-right: 1rem;' class="fa-xl fa-brands fa-stack-overflow"></i>
-                    </a>
-                    <a href="https://github.com/rokbenko" style='text-decoration: none;'>
-                        <i style='color: #FFFFFF; margin-right: 1rem;' class="fa-xl fa-brands fa-github"></i>
-                    </a>
-                    <a href="https://www.youtube.com/@CodeAIwithRok" style='text-decoration: none;'>
-                        <i style='color: #FF0000; margin-right: 1rem;' class="fa-xl fa-brands fa-youtube"></i>
-                    </a>
-                    <a href="https://www.patreon.com/rokbenko" style='text-decoration: none;'>
-                        <i style='color: #F96854;' class="fa-xl fa-brands fa-patreon"></i>
-                    </a>
-                </div>
-            """,
-            unsafe_allow_html=True,
-        )
 
 
 if __name__ == "__main__":
