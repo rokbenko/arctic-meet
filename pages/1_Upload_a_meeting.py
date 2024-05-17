@@ -116,23 +116,25 @@ def main():
     )
 
     # Get the URL of the current page
-    get_url = get_page_location().get("host")
+    get_url = get_page_location()
+    if get_url is not None:
+        get_url_host = get_url.get("host")
 
-    # If user uses the publicly available version of ArcticAlly hosted on Streamlit Cloud, show an important privacy notice
-    if get_url == "arctic-ally.streamlit.app":
-        st.error(
-            body="""
-                    #### ⚠️ Important privacy notice ⚠️
+        # If user uses the publicly available version of ArcticAlly hosted on Streamlit Cloud, show an important privacy notice
+        if get_url_host == "arctic-ally.streamlit.app":
+            st.error(
+                body="""
+                        #### ⚠️ Important privacy notice ⚠️
 
-                    Please be aware that you're currently using the publicly available version of ArcticAlly hosted on Streamlit Cloud, meaning that all transcriptions of meetings you upload here can be viewed by anyone in the world. Do not upload any sensitive or private meetings in any way.
+                        Please be aware that you're currently using the publicly available version of ArcticAlly hosted on Streamlit Cloud, meaning that all transcriptions of meetings you upload here can be viewed by anyone in the world. Do not upload any sensitive or private meetings in any way.
 
-                    I strongly recommend you use the provided sample meeting, which is a simulated, dummy meeting designed for testing purposes.
+                        I strongly recommend you use the provided sample meeting, which is a simulated, dummy meeting designed for testing purposes.
 
-                    By proceeding, you acknowledge and understand the risks associated with uploading meetings to ArcticAlly. You absolve ArcticAlly and its developers of any responsibility for the consequences of such uploads.
+                        By proceeding, you acknowledge and understand the risks associated with uploading meetings to ArcticAlly. You absolve ArcticAlly and its developers of any responsibility for the consequences of such uploads.
 
-                    Thank you for your attention to this matter.
-                """,
-        )
+                        Thank you for your attention to this matter.
+                    """,
+            )
 
     # Create the form for the user to upload a meeting
     with st.form(key="upload_form"):
