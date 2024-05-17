@@ -21,6 +21,15 @@ ArcticAlly is a Streamlit app designed for meeting analysis using the Snowflake 
 > [!NOTE]  
 > I'm currently looking for a full-time engineering position. Feel free to [contact me](https://linktr.ee/rokbenko).
 
+> [!CAUTION]
+> Please be aware that if you use the [publicly available version](https://arctic-ally.streamlit.app/) of ArcticAlly hosted on Streamlit Cloud, it means that all transcriptions of meetings you upload there can be viewed by anyone in the world. Do not upload any sensitive or private meetings in any way.
+>
+> I strongly recommend you use the provided [sample meeting](https://github.com/rokbenko/arctic-ally/blob/main/sample_meeting.mp4), which is a simulated, dummy meeting designed for testing purposes.
+>
+> By proceeding, you acknowledge and understand the risks associated with uploading meetings to ArcticAlly. You absolve ArcticAlly and its developers of any responsibility for the consequences of such uploads.
+>
+> Thank you for your attention to this matter.
+
 <br>
 
 ## 🚀 Getting started 🚀
@@ -168,6 +177,7 @@ ArcticAlly works with the following tech stack:
 | -------------------------------------------------------------------------------------- | ----------- |
 | [Python](https://www.python.org/)                                                      | `3.11.8`    |
 | [Streamlit](https://pypi.org/project/streamlit/)                                       | `1.34.0`    |
+| [Streamlit JS eval](https://pypi.org/project/streamlit-js-eval/)                       | `0.1.7`     |
 | [Snowflake Connector for Python](https://pypi.org/project/snowflake-connector-python/) | `3.10.0`    |
 | [Snowpark API for Python](https://pypi.org/project/snowflake-snowpark-python/)         | `1.16.0`    |
 | [Snowflake ML for Python](https://pypi.org/project/snowflake-ml-python/)               | `1.5.0`     |
