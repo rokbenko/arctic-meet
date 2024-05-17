@@ -130,7 +130,7 @@ def main():
 
             # Add a status container to show the progress of getting a transcription
             with st.status(
-                label=f"Getting a transcription of {uploaded_meeting.name}... This could take a few minutes. Please be patient.",
+                label=f"Getting a transcription of {uploaded_meeting.name}... This could take a while. Please be patient.",
                 expanded=True,
             ) as status:
                 col1, col2 = st.columns([0.9, 0.1])
