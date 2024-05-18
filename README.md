@@ -1,9 +1,8 @@
 <div align="center">
  
-# ❄️ ArcticAlly ❄️
-### AI meeting assistant,<br> always on your side 🙌
+# ❄️ ArcticMeet ❄️
 
-<img width=200 alt="Powered by Snowflake" src="https://github.com/rokbenko/arctic-ally/blob/main/powered_by_snowflake_horizontal_gray_blue.png" />
+<img width=200 alt="Powered by Snowflake" src="https://github.com/rokbenko/arctic-meet/blob/main/powered_by_snowflake_horizontal_gray_blue.png" />
 
 <br>
 
@@ -11,22 +10,22 @@
 
 ## 📖 Short description 📖
 
-ArcticAlly is a Streamlit app designed for meeting analysis using the Snowflake Arctic LLM via [Snowflake Cortex LLM functions](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions).*
+ArcticMeet is a Streamlit app designed for meeting analysis using the Snowflake Arctic LLM via [Snowflake Cortex LLM functions](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions).*
 
 👉 See the video presentation here. (Coming soon... ✨)<br>
-👉 Try the fully functioning app [here](https://arctic-ally.streamlit.app/). (Note: You need to set up Snowflake credentials to start using ArcticAlly. See the [instructions](https://github.com/rokbenko/arctic-ally?tab=readme-ov-file#-getting-started-) below.)
+👉 Try the fully functioning app [here](https://arctic-meet.streamlit.app/). (Note: You need to set up Snowflake credentials to start using ArcticMeet. See the [instructions](https://github.com/rokbenko/arctic-meet?tab=readme-ov-file#-getting-started-) below.)
 
-<sub>\*ArcticAlly was developed as a project for the [_Snowflake June 2024 hackathon_](https://arctic-streamlit-hackathon.devpost.com/).</sub>
+<sub>\*ArcticMeet was developed as a project for the [_Snowflake June 2024 hackathon_](https://arctic-streamlit-hackathon.devpost.com/).</sub>
 
 > [!NOTE]  
 > I'm currently looking for a full-time engineering position. Feel free to [contact me](https://linktr.ee/rokbenko).
 
 > [!CAUTION]
-> Please be aware that if you use the [publicly available version](https://arctic-ally.streamlit.app/) of ArcticAlly hosted on Streamlit Cloud, it means that all transcriptions of meetings you upload there can be viewed by anyone in the world. Do not upload any sensitive or private meetings in any way.
+> Please be aware that if you use the [publicly available version](https://arctic-meet.streamlit.app/) of ArcticMeet hosted on Streamlit Cloud, it means that all transcriptions of meetings you upload there can be viewed by anyone in the world. Do not upload any sensitive or private meetings in any way.
 >
-> I strongly recommend you use the provided [sample meeting](https://github.com/rokbenko/arctic-ally/blob/main/sample_meeting.mp4), which is a simulated, dummy meeting designed for testing purposes.
+> I strongly recommend you use the provided [sample meeting](https://github.com/rokbenko/arctic-meet/blob/main/sample_meeting.mp4), which is a simulated, dummy meeting designed for testing purposes.
 >
-> By proceeding, you acknowledge and understand the risks associated with uploading meetings to ArcticAlly. You absolve ArcticAlly and its developers of any responsibility for the consequences of such uploads.
+> By proceeding, you acknowledge and understand the risks associated with uploading meetings to ArcticMeet. You absolve ArcticMeet and its developers of any responsibility for the consequences of such uploads.
 >
 > Thank you for your attention to this matter.
 
@@ -39,7 +38,7 @@ ArcticAlly is a Streamlit app designed for meeting analysis using the Snowflake 
 Run the following in the terminal to clone the repository:
 
 ```bash
-git clone https://github.com/rokbenko/arctic-ally.git
+git clone https://github.com/rokbenko/arctic-meet.git
 ```
 
 ### Step 2: Change the directory
@@ -47,7 +46,7 @@ git clone https://github.com/rokbenko/arctic-ally.git
 Run the following in the terminal to change the directory:
 
 ```bash
-cd arctic-ally
+cd arctic-meet
 ```
 
 ### Step 3: Install all requirements and packages
@@ -62,12 +61,12 @@ pip install -r packages.txt
 ### Step 4: Set up Snowflake credentials (mandatory) and add them to the `secrets.toml` file (optional but recommended)
 
 > [!NOTE]
-> Setting up Snowflake credentials is mandatory. You need your Snowflake credentials if you want to use ArcticAlly.
+> Setting up Snowflake credentials is mandatory. You need your Snowflake credentials if you want to use ArcticMeet.
 >
-> But adding Snowflake credentials to the `secrets.toml` file is optional. You have two options for how to use your Snowflake credentials with ArcticAlly:
+> But adding Snowflake credentials to the `secrets.toml` file is optional. You have two options for how to use your Snowflake credentials with ArcticMeet:
 >
 > 1. Adding them to the `secrets.toml` file.
-> 2. Typing them into the input fields in the ArcticAlly's sidebar during Step 3. 
+> 2. Typing them into the input fields in the ArcticMeet's sidebar during Step 3. 
 
 1. [Create a Snowflake account](https://signup.snowflake.com/) if you haven't already.<br>
 2. Create the `secrets.toml` file inside the `.streamlit` folder.<br>
@@ -84,7 +83,7 @@ Where:
 
 - `SNOWFLAKE_ACCOUNT` is the Snowflake account you want to use.
 
-![How to get Snowflake credentials](https://github.com/rokbenko/arctic-ally/blob/main/how_to_get_snowflake_credentials.png)
+![How to get Snowflake credentials](https://github.com/rokbenko/arctic-meet/blob/main/how_to_get_snowflake_credentials.png)
 
 > [!IMPORTANT]  
 > The connection object stores a secure connection URL that you use with a Snowflake client to connect to Snowflake. The hostname in the connection URL is composed of your organization name and the connection object name, in addition to a common domain name:
@@ -100,7 +99,7 @@ Where:
 > - Correct: `SNOWFLAKE_ACCOUNT="abcdefg-hackathon"`
 
 > [!IMPORTANT]
-> Generative AI features of ArcticAlly are using the Snowflake Arctic LLM via Snowflake Cortex LLM functions. The [`Complete()`](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#complete) Snowflake Cortex LLM function with the `snowflake-arctic` LLM is, as of April 2024, only supported if you're using the _AWS US West 2 (Oregon)_. If you're using any other location (e.g., _Azure West Europe (Netherlands)_), you'll get the `400 unknown model \snowflake-arctic\` error. This might mislead you. The `snowflake-arctic` LLM exists, but you need to use the _AWS US West 2 (Oregon)_ location when you create an account.
+> Generative AI features of ArcticMeet are using the Snowflake Arctic LLM via Snowflake Cortex LLM functions. The [`Complete()`](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#complete) Snowflake Cortex LLM function with the `snowflake-arctic` LLM is, as of April 2024, only supported if you're using the _AWS US West 2 (Oregon)_. If you're using any other location (e.g., _Azure West Europe (Netherlands)_), you'll get the `400 unknown model \snowflake-arctic\` error. This might mislead you. The `snowflake-arctic` LLM exists, but you need to use the _AWS US West 2 (Oregon)_ location when you create an account.
 >
 > If you haven't created an account with the _AWS US West 2 (Oregon)_ location yet, simply create a new account with the _AWS US West 2 (Oregon)_ location.
 
@@ -109,7 +108,7 @@ Where:
 > [!IMPORTANT]
 > The _Default Warehouse_ needs to be set for the Snowflake user that you want to use, associated with the account that you set for `SNOWFLAKE_ACCOUNT` secret. Otherwise, you'll get the `No active warehouse selected in the current session. Select an active warehouse with the 'use warehouse' command.` error.
 
-![How to check Default Warehouse](https://github.com/rokbenko/arctic-ally/blob/main/how_to_check_default_warehouse.png)
+![How to check Default Warehouse](https://github.com/rokbenko/arctic-meet/blob/main/how_to_check_default_warehouse.png)
 
 - `SNOWFLAKE_USER_PASSWORD` is the password for the Snowflake user that you set for the `SNOWFLAKE_USER_NAME` secret.
 
@@ -118,33 +117,33 @@ Where:
 Run the following in the terminal to start the Streamlit app:
 
 ```bash
-streamlit run ArcticAlly.py
+streamlit run ArcticMeet.py
 ```
 
-### Step 6: Access ArcticAlly in your browser
+### Step 6: Access ArcticMeet in your browser
 
-Navigate to [http://localhost:8501](http://localhost:8501) to open ArcticAlly in the browser.
+Navigate to [http://localhost:8501](http://localhost:8501) to open ArcticMeet in the browser.
 
 <br>
 
 ## 🤔 How does it work 🤔
 
-ArcticAlly analyzes your meeting in the following three steps:
+ArcticMeet analyzes your meeting in the following three steps:
 
 1. **Upload a meeting:**
-   - The goal of this step is to get a transcription of the meeting. ArcticAlly needs a transcription, which is a written version of what was said in your meeting. This helps ArcticAlly understand and analyze your meeting in the next two steps. ArcticAlly will get a transcription of the meeting you upload using Whisper via Hugging Face, more precisely the [`openai/whisper-tiny`](https://huggingface.co/openai/whisper-tiny).
+   - The goal of this step is to get a transcription of the meeting. ArcticMeet needs a transcription, which is a written version of what was said in your meeting. This helps ArcticMeet understand and analyze your meeting in the next two steps. ArcticMeet will get a transcription of the meeting you upload using Whisper via Hugging Face, more precisely the [`openai/whisper-tiny`](https://huggingface.co/openai/whisper-tiny).
    - Note 1: You can only upload one meeting at a time. The file must be in MP4 format and not larger than 5 GB.
    - Note 2: Although there are other more capable (i.e., larger) Whisper models out there, they make the Streamlit app too heavy in terms of resources needed to be hosted on the Streamlit Cloud via the free tier. Larger Whisper models crash the Streamlit app due to the resource limit hit.
 2. **Select a transcription:**
-   - The goal of this step is that the user selects a transcription he/she wants to analyze in the next step. Although only one meeting can be uploaded at a time, the user can analyze multiple meetings one after another. ArcticAlly remembers previously uploaded meetings, so the user in this step can choose between different transcriptions.
+   - The goal of this step is that the user selects a transcription he/she wants to analyze in the next step. Although only one meeting can be uploaded at a time, the user can analyze multiple meetings one after another. ArcticMeet remembers previously uploaded meetings, so the user in this step can choose between different transcriptions.
 3. **Meeting analysis:**
-   - The goal of this step is that the user selects all the [analysis features](https://github.com/rokbenko/arctic-ally/tree/main?tab=readme-ov-file#%EF%B8%8F-analysis-features-%EF%B8%8F) he/she wants to include in the analysis. Then ArcticAlly can start analyzing the meeting and providing the results to the user.
+   - The goal of this step is that the user selects all the [analysis features](https://github.com/rokbenko/arctic-meet/tree/main?tab=readme-ov-file#%EF%B8%8F-analysis-features-%EF%B8%8F) he/she wants to include in the analysis. Then ArcticMeet can start analyzing the meeting and providing the results to the user.
 
 <br>
 
 ## ⚙️ Analysis features ⚙️
 
-ArcticAlly is able to perform the following:
+ArcticMeet is able to perform the following:
 
 - **Summarization:** Providing a summary of the meeting.
 - **Agenda extraction:** Providing key topics discussed in the meeting.
@@ -171,7 +170,7 @@ ArcticAlly is able to perform the following:
 
 ## ⚒️ Tech stack ⚒️
 
-ArcticAlly works with the following tech stack:
+ArcticMeet works with the following tech stack:
 
 | Tech                                                                                   | Version     |
 | -------------------------------------------------------------------------------------- | ----------- |
@@ -190,13 +189,13 @@ ArcticAlly works with the following tech stack:
 | [Plotly](https://pypi.org/project/plotly/)                                             | `5.22.0`    |
 
 > [!NOTE]
-> You don't have to install above mentioned packages one by one. See the [instructions](https://github.com/rokbenko/arctic-ally/tree/main?tab=readme-ov-file#step-3-install-all-requirements-and-packages) above.
+> You don't have to install above mentioned packages one by one. See the [instructions](https://github.com/rokbenko/arctic-meet/tree/main?tab=readme-ov-file#step-3-install-all-requirements-and-packages) above.
 
 <br>
 
 ## 🎭 Behind the sceenes 🎭
 
-ArcticAlly follows the Streamlit multipage app architecture and leverages a wide range of Streamlit components to deliver the best possible UX:
+ArcticMeet follows the Streamlit multipage app architecture and leverages a wide range of Streamlit components to deliver the best possible UX:
 
 - `st.set_page_config`
 - `st.write`
@@ -225,12 +224,12 @@ ArcticAlly follows the Streamlit multipage app architecture and leverages a wide
 - `st.stop`
 - `st.sidebar`
 
-To maximize ArcticAlly's performance, the app utilizes Streamlit caching:
+To maximize ArcticMeet's performance, the app utilizes Streamlit caching:
 
-- [`@st.cache_resource`](https://docs.streamlit.io/develop/concepts/architecture/caching) during Step 1: This means ArcticAlly will transcribe the uploaded meeting only once if the user keeps uploading the same meeting in a span of less than 1 hour. After 1 hour, ArcticAlly dumps the transcription from the cache.
-- [`@st.cache_data`](https://docs.streamlit.io/develop/concepts/architecture/caching) during Step 3: This means ArcticAlly will analyze the uploaded meeting only once if the user keeps uploading the same meeting with the same analysis features chosen in a span of less than 1 hour. After 1 hour, ArcticAlly dumps the meeting analysis from the cache.
+- [`@st.cache_resource`](https://docs.streamlit.io/develop/concepts/architecture/caching) during Step 1: This means ArcticMeet will transcribe the uploaded meeting only once if the user keeps uploading the same meeting in a span of less than 1 hour. After 1 hour, ArcticMeet dumps the transcription from the cache.
+- [`@st.cache_data`](https://docs.streamlit.io/develop/concepts/architecture/caching) during Step 3: This means ArcticMeet will analyze the uploaded meeting only once if the user keeps uploading the same meeting with the same analysis features chosen in a span of less than 1 hour. After 1 hour, ArcticMeet dumps the meeting analysis from the cache.
 
-Also, ArcticAlly employs a wide range of [Snowflake Cortex LLM functions](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions) during Step 3:
+Also, ArcticMeet employs a wide range of [Snowflake Cortex LLM functions](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions) during Step 3:
 
 - [Summarize()](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#label-cortex-llm-summarize)
 - [Complete()](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#label-cortex-llm-complete)
@@ -243,18 +242,18 @@ Also, ArcticAlly employs a wide range of [Snowflake Cortex LLM functions](https:
 
 | Limitation                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | Solution                                                                                                                                                                                                                            | Implementation difficulty                   |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
-| ArcticAlly currently only supports uploading the MP4 file format because most meeting platforms (Zoom, Google Meet, Teams, etc.) enable users to download meetings in the MP4 file format.                                                                                                                                                                                                                                                                                                                                                          | The solution is to simply add support for other file formats using the `st.file_uploader`.                                                                                                                                          | Low.                                         |
-| ArcticAlly has an upload limitation of 5 GB, which is probably enough for most meetings. However, the problem might be that a long meeting, although under 5 GB, could produce a large transcription that might hit the [context window](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#model-restrictions) limit of the Snowflake Arctic LLM when used with the [`Complete()`](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#complete) Snowflake Cortex LLM function (i.e., 4,096 tokens as of April 2024). | It's a current model limitation that will probably be solved in the future if the Snowflake Arctic LLM gets an update.                                                                                                              | Low or none, if the model gets an update.    |
-| ArctcAlly's _Participant identification_ analysis feature is not very robust because it depends on names being mentioned in the meeting at any point. It might happen that ArcticAlly doesn't find all participants but only some of them. The [sample meeting](https://github.com/rokbenko/arctic-ally/blob/main/sample_meeting.mp4) is a perfect example of a transcription, which is not likely to always be the case in real life.                                                                                                                  | ?                                                                                                                                                                                                                                   | ?                                           |
-| ArcticAlly's _Translation_ analysis feature always hits the [context window](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#model-restrictions) limit of the [`Translate()`](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#translate) Snowflake Cortex LLM function (i.e., 1,024 tokens as of April 2024). Even if you upload a very short meeting, the transcription will be too large to get the full translation back. This is the reason the translation is cut off.                | It's a current function limitation that will probably be solved in the future if the [`Translate()`](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#translate) Snowflake Cortex LLM function gets an update. | Low or none, if the function gets an update. |
+| ArcticMeet currently only supports uploading the MP4 file format because most meeting platforms (Zoom, Google Meet, Teams, etc.) enable users to download meetings in the MP4 file format.                                                                                                                                                                                                                                                                                                                                                          | The solution is to simply add support for other file formats using the `st.file_uploader`.                                                                                                                                          | Low.                                         |
+| ArcticMeet has an upload limitation of 5 GB, which is probably enough for most meetings. However, the problem might be that a long meeting, although under 5 GB, could produce a large transcription that might hit the [context window](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#model-restrictions) limit of the Snowflake Arctic LLM when used with the [`Complete()`](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#complete) Snowflake Cortex LLM function (i.e., 4,096 tokens as of April 2024). | It's a current model limitation that will probably be solved in the future if the Snowflake Arctic LLM gets an update.                                                                                                              | Low or none, if the model gets an update.    |
+| ArctcAlly's _Participant identification_ analysis feature is not very robust because it depends on names being mentioned in the meeting at any point. It might happen that ArcticMeet doesn't find all participants but only some of them. The [sample meeting](https://github.com/rokbenko/arctic-meet/blob/main/sample_meeting.mp4) is a perfect example of a transcription, which is not likely to always be the case in real life.                                                                                                                  | ?                                                                                                                                                                                                                                   | ?                                           |
+| ArcticMeet's _Translation_ analysis feature always hits the [context window](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#model-restrictions) limit of the [`Translate()`](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#translate) Snowflake Cortex LLM function (i.e., 1,024 tokens as of April 2024). Even if you upload a very short meeting, the transcription will be too large to get the full translation back. This is the reason the translation is cut off.                | It's a current function limitation that will probably be solved in the future if the [`Translate()`](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#translate) Snowflake Cortex LLM function gets an update. | Low or none, if the function gets an update. |
 
-Despite all the limitations mentioned above, ArcticAlly, in my humble attempt to maintain objectivity 😅, is pretty impressive considering that:
+Despite all the limitations mentioned above, ArcticMeet, in my humble attempt to maintain objectivity 😅, is pretty impressive considering that:
 
-- ArcticAlly's core was developed in just 8 days by 1 person (i.e., me).
+- ArcticMeet's core was developed in just 8 days by 1 person (i.e., me).
 - The Snowflake Arctic LLM was added to the Snowflake Cortex LLM functions only 8 days ago, at the time of writing this.
 - The Snowflake Arctic LLM was announced only 20 days ago, at the time of writing this.
 
-ArcticAlly could become even more awesome by making improvements to either the Snowflake Arctic LLM or Snowflake Cortex LLM functions. This is just the beginning. There's a lot of room for growth and improvement ahead for ArcticAlly as the technology evolves.
+ArcticMeet could become even more awesome by making improvements to either the Snowflake Arctic LLM or Snowflake Cortex LLM functions. This is just the beginning. There's a lot of room for growth and improvement ahead for ArcticMeet as the technology evolves.
 
 <br>
 
@@ -272,4 +271,4 @@ Contributions are welcome! Feel free to [open issues](https://docs.github.com/en
 
 ## 📝 License 📝
 
-This project is open source and available under the [MIT License](https://github.com/rokbenko/arctic-ally/blob/main/LICENSE).
+This project is open source and available under the [MIT License](https://github.com/rokbenko/arctic-meet/blob/main/LICENSE).
