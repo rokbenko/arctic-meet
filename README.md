@@ -136,8 +136,8 @@ ArcticMeet analyzes your meeting in the following three steps:
    - Note 2: Although there are other more capable (i.e., larger) Whisper models out there, they make the Streamlit app too heavy in terms of resources needed to be hosted on the Streamlit Cloud via the free tier. Larger Whisper models crash the Streamlit app due to the resource limit hit.
 2. **Select a transcription:**
    - The goal of this step is that the user selects a transcription he/she wants to analyze in the next step. Although only one meeting can be uploaded at a time, the user can analyze multiple meetings one after another. ArcticMeet remembers previously uploaded meetings, so the user in this step can choose between different transcriptions.
-3. **Meeting analysis:**
-   - The goal of this step is that the user selects all the [analysis features](https://github.com/rokbenko/arctic-meet/tree/main?tab=readme-ov-file#%EF%B8%8F-analysis-features-%EF%B8%8F) he/she wants to include in the analysis. Then ArcticMeet can start analyzing the meeting and providing the results to the user.
+3. **Transcription analysis:**
+   - The goal of this step is that the user selects all the [analysis features](https://github.com/rokbenko/arctic-meet/tree/main?tab=readme-ov-file#%EF%B8%8F-analysis-features-%EF%B8%8F) he or she wants to include in the analysis. Then ArcticMeet can start analyzing the transcription and provide the meeting analysis.
 
 <br>
 
@@ -227,7 +227,7 @@ ArcticMeet follows the Streamlit multipage app architecture and leverages a wide
 To maximize ArcticMeet's performance, the app utilizes Streamlit caching:
 
 - [`@st.cache_resource`](https://docs.streamlit.io/develop/concepts/architecture/caching) during Step 1: This means ArcticMeet will transcribe the uploaded meeting only once if the user keeps uploading the same meeting in a span of less than 1 hour. After 1 hour, ArcticMeet dumps the transcription from the cache.
-- [`@st.cache_data`](https://docs.streamlit.io/develop/concepts/architecture/caching) during Step 3: This means ArcticMeet will analyze the uploaded meeting only once if the user keeps uploading the same meeting with the same analysis features chosen in a span of less than 1 hour. After 1 hour, ArcticMeet dumps the meeting analysis from the cache.
+- [`@st.cache_data`](https://docs.streamlit.io/develop/concepts/architecture/caching) during Step 3: This means ArcticMeet will analyze the transcription only once if the user keeps uploading the same meeting with the same analysis features chosen in a span of less than 1 hour. After 1 hour, ArcticMeet dumps the meeting analysis from the cache.
 
 Also, ArcticMeet employs a wide range of [Snowflake Cortex LLM functions](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions) during Step 3:
 
