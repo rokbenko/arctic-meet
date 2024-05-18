@@ -4,11 +4,11 @@ import pandas as pd
 
 # Set the page configuration
 st.set_page_config(
-    page_title="ArcticAlly – Select a transcription",
+    page_title="ArcticMeet – Select a transcription",
     page_icon="❄️",
     layout="centered",
     menu_items={
-        "Report a bug": "https://github.com/rokbenko/arctic-ally",
+        "Report a bug": "https://github.com/rokbenko/arctic-meet",
     },
 )
 
@@ -116,7 +116,7 @@ def main():
             selected_transcription = st.session_state.get("selected_transcription")
             if selected_transcription is not None:
                 # If a transcription is selected, go to Step 3
-                st.switch_page("pages/3_Meeting_analysis.py")
+                st.switch_page("pages/3_Transcription_analysis.py")
             else:
                 # If no transcription is selected, show a toast notification
                 st.toast(
@@ -157,7 +157,7 @@ def main():
             st.write("&nbsp;")
         with col2:
             cta_button = st.button(
-                "Start using ArcticAlly 🚀", type="primary", use_container_width=True
+                "Start using ArcticMeet 🚀", type="primary", use_container_width=True
             )
         with col3:
             st.write("&nbsp;")

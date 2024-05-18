@@ -3,11 +3,11 @@ import streamlit as st
 
 # Set the page configuration
 st.set_page_config(
-    page_title="ArcticAlly – AI meeting assistant, always on your side 🙌",
+    page_title="ArcticMeet – AI meeting assistant",
     page_icon="❄️",
     layout="centered",
     menu_items={
-        "Report a bug": "https://github.com/rokbenko/arctic-ally",
+        "Report a bug": "https://github.com/rokbenko/arctic-meet",
     },
 )
 
@@ -77,20 +77,19 @@ def main():
     # Add a title and subtitle
     st.markdown(
         """
-            <h1 style='text-align: center;'>❄️ ArcticAlly ❄️</h1>
-            <h4 style='text-align: center; margin-bottom: 0.5rem;'>AI meeting assistant,<br> always on your side 🙌</h4>
+            <h1 style='text-align: center;'>❄️ ArcticMeet ❄️</h1>
         """,
         unsafe_allow_html=True,
     )
 
     st.markdown(
-        """<div style='width: 100%; text-align: center; margin-bottom: 1rem;'>👉 Give ArcticAlly a ⭐ star on <a href='https://github.com/rokbenko/arctic-ally'>GitHub</a>. 👈</div>""",
+        """<div style='width: 100%; text-align: center; margin-bottom: 1rem;'>👉 Give ArcticMeet a ⭐ star on <a href='https://github.com/rokbenko/arctic-meet'>GitHub</a>. 👈</div>""",
         unsafe_allow_html=True,
     )
 
     # Add a description
     st.write(
-        "Introducing ArcticAlly, your AI meeting assistant powered by Snowflake. Developed for the Snowflake June 2024 hackathon, ArcticAlly offers comprehensive meeting analysis with a suite of advanced features. From summarization to agenda extraction, participant identification, sentiment analysis, and translation capabilities, ArcticAlly empowers you to effortlessly uncover valuable insights. With an intuitive Streamlit GUI and seamless integration of cutting-edge technologies, especially the Snowflake Arctic LLM, ArcticAlly revolutionizes your meeting experience."
+        "Introducing ArcticMeet, your AI meeting assistant powered by Snowflake. Developed for the Snowflake June 2024 hackathon, ArcticMeet offers comprehensive meeting analysis with a suite of advanced features. From summarization to agenda extraction, participant identification, sentiment analysis, and translation capabilities, ArcticMeet empowers you to effortlessly uncover valuable insights. With an intuitive Streamlit GUI and seamless integration of cutting-edge technologies, especially the Snowflake Arctic LLM, ArcticMeet revolutionizes your meeting experience."
     )
 
     # Add a CTA button to continue with Step 1
@@ -99,7 +98,7 @@ def main():
         st.write("&nbsp;")
     with col2:
         cta_button = st.button(
-            "Start using ArcticAlly 🚀", type="primary", use_container_width=True
+            "Start using ArcticMeet 🚀", type="primary", use_container_width=True
         )
     with col3:
         st.write("&nbsp;")

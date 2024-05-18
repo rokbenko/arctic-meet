@@ -9,11 +9,11 @@ import plotly.express as px
 
 # Set the page configuration
 st.set_page_config(
-    page_title="ArcticAlly – Meeting analysis",
+    page_title="ArcticMeet – Transcription analysis",
     page_icon="❄️",
     layout="centered",
     menu_items={
-        "Report a bug": "https://github.com/rokbenko/arctic-ally",
+        "Report a bug": "https://github.com/rokbenko/arctic-meet",
     },
 )
 
@@ -31,12 +31,12 @@ if (
 ):
     with st.sidebar:
         st.write(
-            "#### ArcticAlly uses Snowflake Cortex to analyze meetings. Please set your Snowflake credentials below."
+            "#### ArcticMeet uses Snowflake Cortex to analyze transcriptions. Please set your Snowflake credentials below."
         )
 
         st.markdown(
             """
-                <div style='margin-bottom: 1rem;'>For instructions on how to set up Snowflake credentials, see the <a href="https://github.com/rokbenko/arctic-ally?tab=readme-ov-file#-getting-started-" target="_blank" style='color: black;'>GitHub repository</a>.</div>
+                <div style='margin-bottom: 1rem;'>For instructions on how to set up Snowflake credentials, see the <a href="https://github.com/rokbenko/arctic-meet?tab=readme-ov-file#-getting-started-" target="_blank" style='color: black;'>GitHub repository</a>.</div>
             """,
             unsafe_allow_html=True,
         )
@@ -192,11 +192,11 @@ def get_transcription_value(selected_transcription_key):
     return selected_transcription_value
 
 
-# Use cache to analyze the uploaded meeting only once if the user keeps uploading the same meeting
-# The meeting analysis will be cached for 1 hour
+# Use cache to analyze the transcription only once if the user keeps uploading the same meeting
+# The transcription analysis will be cached for 1 hour
 @st.cache_data(
     ttl=3600,
-    show_spinner="ArcticAlly is caching the meeting analysis...",
+    show_spinner="ArcticMeet is caching the transcription analysis...",
 )
 # Define a function to analyze the selected transcription
 def analyze_transcription(
@@ -239,7 +239,7 @@ def analyze_transcription(
     if participants_checkbox:
         participants = Complete(
             model="snowflake-arctic",
-            prompt=f'If you can extract names, provide all participant names and their sex from the following text in a JSON object: {selected_transcription_value}. Your response should be in JSON format, not in a list or any other format. Here is an example of the response if you can extract names: {{"participants_names": [{{"name": "John", "sex": "male"}}, {{"name": "Jane", "sex": "female"}}, {{"name": "Bob", "sex": "male"}}, {{"name": "Alice", "sex": "female"}}]}}. If you cannot extract names, provide a number of participants from the following text in a JSON object: {selected_transcription_value}. Your response should be in JSON format, not in a list or any other format. Here is an example of the response if you cannot extract names: {{"participants_number": 4}}. If you cannot extract participant names or the number of participants, provide the following JSON object: {{"participants_fail": "ArcticAlly could not extract participants."}}',
+            prompt=f'If you can extract names, provide all participant names and their sex from the following text in a JSON object: {selected_transcription_value}. Your response should be in JSON format, not in a list or any other format. Here is an example of the response if you can extract names: {{"participants_names": [{{"name": "John", "sex": "male"}}, {{"name": "Jane", "sex": "female"}}, {{"name": "Bob", "sex": "male"}}, {{"name": "Alice", "sex": "female"}}]}}. If you cannot extract names, provide a number of participants from the following text in a JSON object: {selected_transcription_value}. Your response should be in JSON format, not in a list or any other format. Here is an example of the response if you cannot extract names: {{"participants_number": 4}}. If you cannot extract participant names or the number of participants, provide the following JSON object: {{"participants_fail": "ArcticMeet could not extract participants."}}',
             session=session,
         )
 
@@ -297,7 +297,7 @@ def main():
     try:
         # Add a title
         st.markdown(
-            "<h2 style='text-align: center; margin-bottom: 0.5rem;'>❄️ Step 3: Meeting analysis ❄️</h2>",
+            "<h2 style='text-align: center; margin-bottom: 0.5rem;'>❄️ Step 3: Transcription analysis ❄️</h2>",
             unsafe_allow_html=True,
         )
 
@@ -346,7 +346,7 @@ def main():
                     ):
                         # Add an error message
                         st.error(
-                            body="Please provide your Snowflake credentials in the sidebar. For every credential you provide, you'll need to press Enter to apply. After all your credentials are provided, the app will automatically refresh, and you'll be able to analyze your meeting.",
+                            body="Please provide your Snowflake credentials in the sidebar. For every credential you provide, you'll need to press Enter to apply. After all your credentials are provided, the app will automatically refresh, and you'll be able to analyze your transcription.",
                             icon="❗",
                         )
                     else:
@@ -395,7 +395,7 @@ def main():
                                     placeholder="Select a language...",
                                 )
                                 st.write(
-                                    ":red[* This needs to be the language of your meeting.]"
+                                    ":red[* This needs to be the language of the meeting.]"
                                 )
                             with col_right:
                                 selected_to_language = st.selectbox(
@@ -611,7 +611,7 @@ def main():
                 st.write("&nbsp;")
             with col2:
                 cta_button = st.button(
-                    "Start using ArcticAlly 🚀",
+                    "Start using ArcticMeet 🚀",
                     type="primary",
                     use_container_width=True,
                 )
@@ -754,7 +754,7 @@ def main():
 
                             # Add an info message
                             st.info(
-                                body="This analysis feature is the least reliable because it depends on names being mentioned in the meeting at any point. It might happen that ArcticAlly doesn't find all participants but only some of them.",
+                                body="This analysis feature is the least reliable because it depends on names being mentioned in the meeting at any point. It might happen that ArcticMeet doesn't find all participants but only some of them.",
                                 icon="ℹ️",
                             )
 
@@ -768,7 +768,7 @@ def main():
 
                             # Add an info message
                             st.info(
-                                body="This analysis feature is the least reliable because it depends on the number of participants being mentioned in the meeting at any point. It might happen that ArcticAlly doesn't find all participants but only some of them.",
+                                body="This analysis feature is the least reliable because it depends on the number of participants being mentioned in the meeting at any point. It might happen that ArcticMeet doesn't find all participants but only some of them.",
                                 icon="ℹ️",
                             )
 

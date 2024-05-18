@@ -7,11 +7,11 @@ from streamlit_js_eval import get_page_location
 
 # Set the page configuration
 st.set_page_config(
-    page_title="ArcticAlly – Upload a meeting",
+    page_title="ArcticMeet – Upload a meeting",
     page_icon="❄️",
     layout="centered",
     menu_items={
-        "Report a bug": "https://github.com/rokbenko/arctic-ally",
+        "Report a bug": "https://github.com/rokbenko/arctic-meet",
     },
 )
 
@@ -109,7 +109,7 @@ def main():
         """
             <h2 style='text-align: center; margin-bottom: 0.5rem;'>❄️ Step 1: Upload a meeting ❄️</h2>
             <p style='text-align: center; margin-bottom: 0.5rem;'>
-                Start by uploading your meeting so that ArcticAlly can get a transcription of it. ArcticAlly needs a transcription, which is a written version of what was said in your meeting. This helps ArcticAlly understand and analyze your meeting in the next steps.
+                Start by uploading your meeting so that ArcticMeet can get a transcription of it. ArcticMeet needs a transcription, which is a written version of what was said in your meeting. This helps ArcticMeet understand and analyze your meeting in the next steps.
             </p>
         """,
         unsafe_allow_html=True,
@@ -120,17 +120,17 @@ def main():
     if get_url is not None:
         get_url_host = get_url.get("host")
 
-        # If user uses the publicly available version of ArcticAlly hosted on Streamlit Cloud, show an important privacy notice
-        if get_url_host == "arctic-ally.streamlit.app":
+        # If user uses the publicly available version of ArcticMeet hosted on Streamlit Cloud, show an important privacy notice
+        if get_url_host == "arctic-meet.streamlit.app":
             st.error(
                 body="""
                         #### ⚠️ Important privacy notice ⚠️
 
-                        Please be aware that you're currently using the publicly available version of ArcticAlly hosted on Streamlit Cloud, meaning that all transcriptions of meetings you upload here can be viewed by anyone in the world. Do not upload any sensitive or private meetings in any way.
+                        Please be aware that you're currently using the publicly available version of ArcticMeet hosted on Streamlit Cloud, meaning that all transcriptions of meetings you upload here can be viewed by anyone in the world. Do not upload any sensitive or private meetings in any way.
 
                         I strongly recommend you use the provided sample meeting, which is a simulated, dummy meeting designed for testing purposes.
 
-                        By proceeding, you acknowledge and understand the risks associated with uploading meetings to ArcticAlly. You absolve ArcticAlly and its developers of any responsibility for the consequences of such uploads.
+                        By proceeding, you acknowledge and understand the risks associated with uploading meetings to ArcticMeet. You absolve ArcticMeet and its developers of any responsibility for the consequences of such uploads.
 
                         Thank you for your attention to this matter.
                     """,
@@ -149,7 +149,7 @@ def main():
         # Info message with a link to the sample meeting
         st.info(
             """
-                Don't you have your own meeting to try? Download and try a [sample meeting](https://github.com/rokbenko/arctic-ally/blob/main/sample_meeting.mp4?raw=true).
+                Don't you have your own meeting to try? Download and try a [sample meeting](https://github.com/rokbenko/arctic-meet/blob/main/sample_meeting.mp4?raw=true).
             """
         )
 
@@ -214,7 +214,7 @@ def main():
                     # The transcription will be cached for 1 hour
                     @st.cache_resource(
                         ttl=3600,
-                        show_spinner="ArcticAlly is caching the transcription...",
+                        show_spinner="ArcticMeet is caching the transcription...",
                     )
                     def load_model(transcription):
                         pipe = pipeline(
@@ -234,7 +234,7 @@ def main():
 
                     # Update the status container after the transcription is obtained
                     status.update(
-                        label=f"ArcticAlly successfully got a transcription of {uploaded_meeting.name}",
+                        label=f"ArcticMeet successfully got a transcription of {uploaded_meeting.name}",
                         expanded=False,
                     )
 
