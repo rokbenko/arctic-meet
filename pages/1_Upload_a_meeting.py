@@ -108,7 +108,7 @@ def main():
     st.markdown(
         """
             <h2 style='text-align: center; margin-bottom: 0.5rem;'>❄️ Step 1: Upload a meeting ❄️</h2>
-            <p style='text-align: center; margin-bottom: 0.5rem;'>
+            <p style='text-align: center;'>
                 Start by uploading your meeting so that ArcticMeet can get a transcription of it. ArcticMeet needs a transcription, which is a written version of what was said in your meeting. This helps ArcticMeet understand and analyze your meeting in the next steps.
             </p>
         """,

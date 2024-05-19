@@ -736,7 +736,7 @@ def main():
                                 genders.append(sex)
 
                             # Display the images
-                            st.image(images, width=100, caption=captions)
+                            st.image(images, width=75, caption=captions)
 
                             st.subheader("Distribution of male vs female participants")
 
