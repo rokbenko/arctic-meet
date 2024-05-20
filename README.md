@@ -12,7 +12,7 @@
 
 ArcticMeet is a Streamlit app designed for meeting analysis using the Snowflake Arctic LLM via [Snowflake Cortex LLM functions](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions).*
 
-👉 See the video presentation here. (Coming soon... ✨)<br>
+👉 See the video presentation [here](https://youtu.be/sWHtrgQOv7Q).<br>
 👉 Try the fully functioning app [here](https://arctic-meet.streamlit.app/). (Note: You need to set up Snowflake credentials to start using ArcticMeet. See the [instructions](https://github.com/rokbenko/arctic-meet?tab=readme-ov-file#-getting-started-) below.)
 
 <sub>\*ArcticMeet was developed as a project for the [_Snowflake June 2024 hackathon_](https://arctic-streamlit-hackathon.devpost.com/).</sub>
@@ -65,8 +65,8 @@ pip install -r packages.txt
 >
 > But adding Snowflake credentials to the `secrets.toml` file is optional. You have two options for how to use your Snowflake credentials with ArcticMeet:
 >
-> 1. Adding them to the `secrets.toml` file.
-> 2. Typing them into the input fields in the ArcticMeet's sidebar during Step 3. 
+> - adding them to the `secrets.toml` file, or
+> - typing them into the input fields in the ArcticMeet's sidebar during Step 3. 
 
 1. [Create a Snowflake account](https://signup.snowflake.com/) if you haven't already.<br>
 2. Create the `secrets.toml` file inside the `.streamlit` folder.<br>
@@ -188,7 +188,7 @@ ArcticMeet works with the following tech stack:
 | [Pandas](https://pypi.org/project/pandas/)                                             | `2.2.0`     |
 | [Plotly](https://pypi.org/project/plotly/)                                             | `5.22.0`    |
 
-> [!NOTE]
+> [!TIP]
 > You don't have to install above mentioned packages one by one. See the [instructions](https://github.com/rokbenko/arctic-meet/tree/main?tab=readme-ov-file#step-3-install-all-requirements-and-packages) above.
 
 <br>
@@ -231,10 +231,10 @@ To maximize ArcticMeet's performance, the app utilizes Streamlit caching:
 
 Also, ArcticMeet employs a wide range of [Snowflake Cortex LLM functions](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions) during Step 3:
 
-- [Summarize()](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#label-cortex-llm-summarize)
-- [Complete()](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#label-cortex-llm-complete)
-- [Sentiment()](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#label-cortex-llm-sentiment)
-- [Translate()](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#label-cortex-llm-translate)
+- [`Summarize()`](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#label-cortex-llm-summarize)
+- [`Complete()`](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#label-cortex-llm-complete)
+- [`Sentiment()`](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#label-cortex-llm-sentiment)
+- [`Translate()`](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#label-cortex-llm-translate)
 
 <br>
 
@@ -245,7 +245,7 @@ Also, ArcticMeet employs a wide range of [Snowflake Cortex LLM functions](https:
 | ArcticMeet currently only supports uploading the MP4 file format because most meeting platforms (Zoom, Google Meet, Teams, etc.) enable users to download meetings in the MP4 file format.                                                                                                                                                                                                                                                                                                                                                          | The solution is to simply add support for other file formats using the `st.file_uploader`.                                                                                                                                          | Low.                                         |
 | ArcticMeet has an upload limitation of 5 GB, which is probably enough for most meetings. However, the problem might be that a long meeting, although under 5 GB, could produce a large transcription that might hit the [context window](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#model-restrictions) limit of the Snowflake Arctic LLM when used with the [`Complete()`](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#complete) Snowflake Cortex LLM function (i.e., 4,096 tokens as of April 2024). | It's a current model limitation that will probably be solved in the future if the Snowflake Arctic LLM gets an update.                                                                                                              | Low or none, if the model gets an update.    |
 | ArctcAlly's _Participant identification_ analysis feature is not very robust because it depends on names being mentioned in the meeting at any point. It might happen that ArcticMeet doesn't find all participants but only some of them. The [sample meeting](https://github.com/rokbenko/arctic-meet/blob/main/sample_meeting.mp4) is a perfect example of a transcription, which is not likely to always be the case in real life.                                                                                                                  | ?                                                                                                                                                                                                                                   | ?                                           |
-| ArcticMeet's _Translation_ analysis feature always hits the [context window](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#model-restrictions) limit of the [`Translate()`](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#translate) Snowflake Cortex LLM function (i.e., 1,024 tokens as of April 2024). Even if you upload a very short meeting, the transcription will be too large to get the full translation back. This is the reason the translation is cut off.                | It's a current function limitation that will probably be solved in the future if the [`Translate()`](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#translate) Snowflake Cortex LLM function gets an update. | Low or none, if the function gets an update. |
+| ArcticMeet's _Translation_ analysis feature always hits the [context window](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#model-restrictions) limit of the [`Translate()`](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#translate) Snowflake Cortex LLM function (i.e., 1,024 tokens as of April 2024). Even if you upload a very short meeting, the transcription will be too large to get the full translation back. This is the reason the translation is cut off.                | There are two possible solutions:<br>• the [`Translate()`](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#translate) Snowflake Cortex LLM function gets an update, or<br>• I change the code so that the transcription is sent to the [`Translate()`](https://docs.snowflake.com/en/user-guide/snowflake-cortex/llm-functions#translate) Snowflake Cortex LLM function in chunks, but to do this, I need to know which tokenizer Snowflake Arctic uses. I couldn't find this information anywhere. | Low or none, if the function gets an update. |
 
 Despite all the limitations mentioned above, ArcticMeet, in my humble attempt to maintain objectivity 😅, is pretty impressive considering that:
 
@@ -253,19 +253,19 @@ Despite all the limitations mentioned above, ArcticMeet, in my humble attempt to
 - The Snowflake Arctic LLM was added to the Snowflake Cortex LLM functions only 8 days ago, at the time of writing this.
 - The Snowflake Arctic LLM was announced only 20 days ago, at the time of writing this.
 
-ArcticMeet could become even more awesome by making improvements to either the Snowflake Arctic LLM or Snowflake Cortex LLM functions. This is just the beginning. There's a lot of room for growth and improvement ahead for ArcticMeet as the technology evolves.
-
-<br>
-
-## 🎥 Screenshots 🎥
-
-Coming soon... ✨
+ArcticMeet could become even more awesome by making improvements to either the Snowflake Arctic LLM, Snowflake Cortex LLM functions, or the code itself. There's a lot of room for growth and improvement ahead for ArcticMeet.
 
 <br>
 
 ## 🤝 Contributing 🤝
 
 Contributions are welcome! Feel free to [open issues](https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue) or [create pull requests](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request) for any improvements or bug fixes.
+
+<br>
+
+## ⭐ Star history ⭐
+
+[![Star history chart](https://api.star-history.com/svg?repos=rokbenko/arctic-meet&type=Date)](https://star-history.com/#rokbenko/arctic-meet&Date)
 
 <br>
 
