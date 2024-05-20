@@ -792,7 +792,12 @@ def main():
 
                         # Add an info message
                         st.info(
-                            body="If the translation is cut off, it's because the transcription is too long and hits the context limit of the LLM. This will probably be solved in the future if the Translate Snowflake Cortex LLM function gets an update.",
+                            body="""
+                                If the translation is cut off, it's because the transcription is too long and hits the context limit of the Translate() Snowflake Cortex LLM function. There are two possible solutions:
+
+                                1. The Translate() Snowflake Cortex LLM function gets an update with a larger context limit.
+                                2. I change the code so that the transcription is sent to the Translate() Snowflake Cortex LLM function in chunks, but to do this, I need to know which tokenizer Snowflake Arctic uses. I couldn't find this information anywhere.
+                            """,
                             icon="ℹ️",
                         )
 
