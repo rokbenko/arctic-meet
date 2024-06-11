@@ -4,6 +4,8 @@
 
 <img width=200 alt="Powered by Snowflake" src="https://github.com/rokbenko/arctic-meet/blob/main/powered_by_snowflake_horizontal_gray_blue.png" />
 
+Enjoying what you find in this repository? Your star ⭐ would be greatly appreciated!
+
 <br>
 
 </div>
@@ -16,9 +18,6 @@ ArcticMeet is a Streamlit app designed for meeting analysis using the Snowflake 
 👉 Try the fully functioning app [here](https://arctic-meet.streamlit.app/). (Note: You need to set up Snowflake credentials to start using ArcticMeet. See the [instructions](https://github.com/rokbenko/arctic-meet?tab=readme-ov-file#-getting-started-) below.)
 
 <sub>\*ArcticMeet was developed as a project for the [_Snowflake June 2024 hackathon_](https://arctic-streamlit-hackathon.devpost.com/).</sub>
-
-> [!NOTE]  
-> I'm currently looking for a full-time engineering position. Feel free to [contact me](https://linktr.ee/rokbenko).
 
 > [!CAUTION]
 > Please be aware that if you use the [publicly available version](https://arctic-meet.streamlit.app/) of ArcticMeet hosted on Streamlit Cloud, it means that all transcriptions of meetings you upload there can be viewed by anyone in the world. Do not upload any sensitive or private meetings in any way.
