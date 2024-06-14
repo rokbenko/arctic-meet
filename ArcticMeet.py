@@ -24,13 +24,13 @@ with st.sidebar:
                 <a href="https://www.linkedin.com/in/rokbenko/" style='text-decoration: none;'>
                     <i style='color: #0072B1; margin-right: 1rem;' class="fa-xl fa-brands fa-linkedin"></i>
                 </a>
-                <a href="https://stackoverflow.com/users/10347145/rok-benko?tab=profile" style='text-decoration: none;'>
+                <a href="https://stackoverflow.com/users/10347145/" style='text-decoration: none;'>
                     <i style='color: #F48024; margin-right: 1rem;' class="fa-xl fa-brands fa-stack-overflow"></i>
                 </a>
                 <a href="https://github.com/rokbenko" style='text-decoration: none;'>
                     <i style='color: #FFFFFF; margin-right: 1rem;' class="fa-xl fa-brands fa-github"></i>
                 </a>
-                <a href="https://www.youtube.com/@CodeAIwithRok" style='text-decoration: none;'>
+                <a href="https://www.youtube.com/@rokbenko?sub_confirmation=1" style='text-decoration: none;'>
                     <i style='color: #FF0000; margin-right: 1rem;' class="fa-xl fa-brands fa-youtube"></i>
                 </a>
                 <a href="https://www.patreon.com/rokbenko" style='text-decoration: none;'>
